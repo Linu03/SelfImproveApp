@@ -1,17 +1,24 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 class SplashScreen extends StatefulWidget {
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
+  final RandomGeneratorMessage generator = RandomGeneratorMessage();
+  late String randomMessage;
 
   @override
   void initState() {
+
+    randomMessage = generator.getMessage();
+
     super.initState();
 
     // Animație fade-in
@@ -25,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     _controller.forward();
 
     // Trecerea la HomeScreen după 4 secunde
-    Timer(Duration(seconds: 4), () {
+    Timer(Duration(seconds: 6), () {
       Navigator.of(context).pushReplacementNamed('/home');
     });
   }
@@ -51,7 +58,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
           children: [
             // Logo + titlu
             Align(
-              alignment: Alignment(0, -0.2), 
+              alignment: Alignment(0, -0.2),
               child: FadeTransition(
                 opacity: _fadeAnimation,
                 child: Column(
@@ -85,9 +92,9 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
             Align(
               alignment: Alignment(0, 0.7),
               child: Text(
-                'Try your best to become a HERO!',
+                randomMessage,
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 18,
                   color: Colors.amber,
                   fontStyle: FontStyle.italic,
                 ),
@@ -99,3 +106,33 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     );
   }
 }
+
+class RandomGeneratorMessage {
+  var random = Random();
+
+
+    List<String> messages = [
+      "Try your best to become a HERO!",
+      "Every step counts—level up yourself today!",
+      "Conquer your fears, claim your power!",
+      "Unleash the hero within you!",
+      "Adventure awaits—embrace your destiny!",
+      "Forge your path to greatness!",
+      "Rise above challenges, be the hero!",
+      "Courage is your greatest weapon!",
+      "Believe in yourself, become unstoppable!",
+      "Heroes are made, not born—start your journey!",
+      "Dream big, act bigger!",
+      "Rise, grind, and conquer!",
+      "Turn your goals into achievements!",
+      "Be bold, be brave, be unstoppable!",
+      "Push limits, break barriers, grow!",
+      "Master yourself, master your world!",
+      "Your future self will thank you!",
+      "Success is a journey, not a destination!",
+    ];
+
+    String getMessage() {
+      return messages[random.nextInt(messages.length)];
+    }
+  }
