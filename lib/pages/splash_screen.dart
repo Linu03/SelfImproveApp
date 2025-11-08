@@ -11,12 +11,12 @@ class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
+  late Animation<Offset> _slideAnimation;
   final RandomGeneratorMessage generator = RandomGeneratorMessage();
   late String randomMessage;
 
   @override
   void initState() {
-
     randomMessage = generator.getMessage();
 
     super.initState();
@@ -28,6 +28,15 @@ class _SplashScreenState extends State<SplashScreen>
     );
 
     _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(_controller);
+
+    // Animație slide-up pentru textul din partea de jos (începe cu întârziere)
+    _slideAnimation = Tween<Offset>(begin: Offset(0, 0.5), end: Offset.zero)
+        .animate(
+          CurvedAnimation(
+            parent: _controller,
+            curve: Interval(0.5, 1.0, curve: Curves.easeOut),
+          ),
+        );
 
     _controller.forward();
 
@@ -91,12 +100,18 @@ class _SplashScreenState extends State<SplashScreen>
 
             Align(
               alignment: Alignment(0, 0.7),
-              child: Text(
-                randomMessage,
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.amber,
-                  fontStyle: FontStyle.italic,
+              child: SlideTransition(
+                position: _slideAnimation,
+                child: FadeTransition(
+                  opacity: _fadeAnimation,
+                  child: Text(
+                    randomMessage,
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.amber,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -110,29 +125,28 @@ class _SplashScreenState extends State<SplashScreen>
 class RandomGeneratorMessage {
   var random = Random();
 
+  List<String> messages = [
+    "Try your best to become a HERO!",
+    "Every step counts—level up yourself today!",
+    "Conquer your fears, claim your power!",
+    "Unleash the hero within you!",
+    "Adventure awaits—embrace your destiny!",
+    "Forge your path to greatness!",
+    "Rise above challenges, be the hero!",
+    "Courage is your greatest weapon!",
+    "Believe in yourself, become unstoppable!",
+    "Heroes are made, not born—start your journey!",
+    "Dream big, act bigger!",
+    "Rise, grind, and conquer!",
+    "Turn your goals into achievements!",
+    "Be bold, be brave, be unstoppable!",
+    "Push limits, break barriers, grow!",
+    "Master yourself, master your world!",
+    "Your future self will thank you!",
+    "Success is a journey, not a destination!",
+  ];
 
-    List<String> messages = [
-      "Try your best to become a HERO!",
-      "Every step counts—level up yourself today!",
-      "Conquer your fears, claim your power!",
-      "Unleash the hero within you!",
-      "Adventure awaits—embrace your destiny!",
-      "Forge your path to greatness!",
-      "Rise above challenges, be the hero!",
-      "Courage is your greatest weapon!",
-      "Believe in yourself, become unstoppable!",
-      "Heroes are made, not born—start your journey!",
-      "Dream big, act bigger!",
-      "Rise, grind, and conquer!",
-      "Turn your goals into achievements!",
-      "Be bold, be brave, be unstoppable!",
-      "Push limits, break barriers, grow!",
-      "Master yourself, master your world!",
-      "Your future self will thank you!",
-      "Success is a journey, not a destination!",
-    ];
-
-    String getMessage() {
-      return messages[random.nextInt(messages.length)];
-    }
+  String getMessage() {
+    return messages[random.nextInt(messages.length)];
   }
+}

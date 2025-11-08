@@ -1,22 +1,20 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import '../widgets/bottom_navbar.dart';
-import '../widgets/top_navbar.dart';
 
-class HomeScreen extends StatefulWidget {
+class AddTaskScreen extends StatefulWidget {
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _AddTaskScreenState createState() => _AddTaskScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  int _currentIndex = 0;
+class _AddTaskScreenState extends State<AddTaskScreen> {
+  int _currentIndex = 1; // already on Add Task
 
   void _onNavTap(int index) {
     switch (index) {
       case 0:
+        Navigator.pushReplacementNamed(context, '/home');
         break;
       case 1:
-        Navigator.pushReplacementNamed(context, '/add-task');
         break;
       case 2:
         Navigator.pushReplacementNamed(context, '/journal');
@@ -27,9 +25,12 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Home Screen')),
+      appBar: AppBar(
+        title: Text('Add New Task'),
+        backgroundColor: Colors.indigo,
+      ),
       body: Center(
-        child: Text('This is the Home Screen', style: TextStyle(fontSize: 24)),
+        child: Text('Add Task Screen', style: TextStyle(fontSize: 24)),
       ),
       bottomNavigationBar: BottomNavbar(
         currentIndex: _currentIndex,
