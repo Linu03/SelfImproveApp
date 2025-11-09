@@ -9,7 +9,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _currentIndex = 0;
+  final int _currentIndex = 0;
 
   void _onNavTap(int index) {
     switch (index) {
@@ -27,7 +27,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Home Screen')),
+      appBar: TopNavbar(
+        onUserTap: () => Navigator.pushNamed(context, '/profile'),
+        onShopTap: () => Navigator.pushNamed(context, '/shop'),
+      ),
       body: Center(
         child: Text('This is the Home Screen', style: TextStyle(fontSize: 24)),
       ),

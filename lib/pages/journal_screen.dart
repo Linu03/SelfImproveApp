@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/bottom_navbar.dart';
+import '../widgets/top_navbar.dart';
 
 class JournalScreen extends StatefulWidget {
   @override
@@ -25,7 +26,11 @@ class _JournalScreenState extends State<JournalScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Journal'), backgroundColor: Colors.indigo),
+      appBar: TopNavbar(
+        title: 'Journal',
+        onUserTap: () => Navigator.pushNamed(context, '/profile'),
+        onShopTap: () => Navigator.pushNamed(context, '/shop'),
+      ),
       body: Center(
         child: Text('Journal Screen', style: TextStyle(fontSize: 24)),
       ),

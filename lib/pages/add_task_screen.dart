@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/bottom_navbar.dart';
+import '../widgets/top_navbar.dart';
 
 class AddTaskScreen extends StatefulWidget {
   @override
@@ -25,9 +26,10 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Add New Task'),
-        backgroundColor: Colors.indigo,
+      appBar: TopNavbar(
+        title: 'Add Task',
+        onUserTap: () => Navigator.pushNamed(context, '/profile'),
+        onShopTap: () => Navigator.pushNamed(context, '/shop'),
       ),
       body: Center(
         child: Text('Add Task Screen', style: TextStyle(fontSize: 24)),

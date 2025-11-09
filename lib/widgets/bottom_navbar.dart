@@ -23,6 +23,5 @@ class BottomNavbar extends StatelessWidget {
   }
 }
 
-void main() {
-  runApp(MaterialApp(home: BottomNavbar()));
-}
+// Removed test `main()` to avoid creating a separate MaterialApp without routes.
+// Use the app's main.dart `MyApp` which defines routes.
