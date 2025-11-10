@@ -31,9 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onUserTap: () => Navigator.pushNamed(context, '/profile'),
         onShopTap: () => Navigator.pushNamed(context, '/shop'),
       ),
-      body: Center(
-        child: Text('This is the Home Screen', style: TextStyle(fontSize: 24)),
-      ),
+      body: Center(),
       bottomNavigationBar: BottomNavbar(
         currentIndex: _currentIndex,
         onTap: _onNavTap,
