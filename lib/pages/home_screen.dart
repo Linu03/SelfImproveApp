@@ -9,7 +9,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final int _currentIndex = 0;
+  final int? _currentIndex = 0;
 
   void _onNavTap(int index) {
     switch (index) {

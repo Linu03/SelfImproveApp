@@ -8,7 +8,7 @@ class JournalScreen extends StatefulWidget {
 }
 
 class _JournalScreenState extends State<JournalScreen> {
-  int _currentIndex = 2; // already on Journal
+  int? _currentIndex = 2; // already on Journal
 
   void _onNavTap(int index) {
     switch (index) {
@@ -27,7 +27,6 @@ class _JournalScreenState extends State<JournalScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopNavbar(
-        title: 'Journal',
         onUserTap: () => Navigator.pushNamed(context, '/profile'),
         onShopTap: () => Navigator.pushNamed(context, '/shop'),
       ),

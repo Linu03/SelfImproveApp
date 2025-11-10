@@ -21,7 +21,6 @@ class _SplashScreenState extends State<SplashScreen>
 
     super.initState();
 
-    // Animație fade-in
     _controller = AnimationController(
       vsync: this,
       duration: Duration(seconds: 2),
@@ -29,7 +28,6 @@ class _SplashScreenState extends State<SplashScreen>
 
     _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(_controller);
 
-    // Animație slide-up pentru textul din partea de jos (începe cu întârziere)
     _slideAnimation = Tween<Offset>(begin: Offset(0, 0.5), end: Offset.zero)
         .animate(
           CurvedAnimation(
@@ -40,7 +38,9 @@ class _SplashScreenState extends State<SplashScreen>
 
     _controller.forward();
 
-    // Trecerea la HomeScreen după 4 secunde
+
+
+    // to optimize - when application is ready, navigate imediatelly
     Timer(Duration(seconds: 6), () {
       Navigator.of(context).pushReplacementNamed('/home');
     });

@@ -8,7 +8,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  int _currentIndex = 0; // default to Home (no exact match for profile)
+  int? _currentIndex; // null => no bottom item highlighted on Profile
 
   void _onNavTap(int index) {
     switch (index) {
@@ -28,8 +28,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopNavbar(
-        title: 'Profile',
-        // On the profile page, the user icon could open settings; keep default behavior
+        userSelected: true,
         onShopTap: () => Navigator.pushNamed(context, '/shop'),
       ),
       body: Center(

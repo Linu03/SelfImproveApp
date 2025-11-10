@@ -1,27 +1,51 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 
+/// Custom bottom navigation bar that allows a nullable [currentIndex].
+/// If [currentIndex] is null the bar is shown but no item is highlighted.
 class BottomNavbar extends StatelessWidget {
-  final int currentIndex;
-  final Function(int)? onTap;
+  final int? currentIndex;
+  final ValueChanged<int>? onTap;
 
-  const BottomNavbar({Key? key, this.currentIndex = 0, this.onTap})
+  const BottomNavbar({Key? key, this.currentIndex, this.onTap})
     : super(key: key);
+
+  Widget _buildItem(
+    BuildContext context,
+    IconData icon,
+    String label,
+    int index,
+  ) {
+    final bool selected = currentIndex != null && currentIndex == index;
+    final color = selected ? Colors.amber : Colors.white70;
+    return Expanded(
+      child: IconButton(
+        icon: Icon(icon, color: color),
+        tooltip: label,
+        onPressed: () => onTap?.call(index),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(Icons.add_task), label: 'Add Task'),
-        BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Journal'),
-      ],
-      currentIndex: currentIndex,
-      selectedItemColor: Colors.amber[800],
-      onTap: onTap,
+    final gradient = LinearGradient(
+      colors: [Color.fromARGB(255, 20, 93, 154), Colors.indigo],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+    );
+
+    return Container(
+      decoration: BoxDecoration(gradient: gradient),
+      child: SafeArea(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _buildItem(context, Icons.home, 'Home', 0),
+            _buildItem(context, Icons.add_task, 'Add Task', 1),
+            _buildItem(context, Icons.book, 'Journal', 2),
+          ],
+        ),
+      ),
     );
   }
 }
-
-// Removed test `main()` to avoid creating a separate MaterialApp without routes.
-// Use the app's main.dart `MyApp` which defines routes.

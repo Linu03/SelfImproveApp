@@ -8,7 +8,7 @@ class AddTaskScreen extends StatefulWidget {
 }
 
 class _AddTaskScreenState extends State<AddTaskScreen> {
-  int _currentIndex = 1; // already on Add Task
+  int? _currentIndex = 1; // already on Add Task
 
   void _onNavTap(int index) {
     switch (index) {
@@ -27,7 +27,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopNavbar(
-        title: 'Add Task',
         onUserTap: () => Navigator.pushNamed(context, '/profile'),
         onShopTap: () => Navigator.pushNamed(context, '/shop'),
       ),

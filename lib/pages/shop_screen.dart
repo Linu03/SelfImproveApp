@@ -8,7 +8,7 @@ class ShopScreen extends StatefulWidget {
 }
 
 class _ShopScreenState extends State<ShopScreen> {
-  int _currentIndex = 0; // default to Home
+  int? _currentIndex; // null => no bottom item highlighted on Shop
 
   void _onNavTap(int index) {
     switch (index) {
@@ -28,7 +28,7 @@ class _ShopScreenState extends State<ShopScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopNavbar(
-        title: 'Shop',
+        shopSelected: true,
         onUserTap: () => Navigator.pushNamed(context, '/profile'),
       ),
       body: Center(child: Text('Shop Screen', style: TextStyle(fontSize: 24))),
