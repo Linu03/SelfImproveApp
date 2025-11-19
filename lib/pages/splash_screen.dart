@@ -41,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen>
 
 
     // to optimize - when application is ready, navigate imediatelly
-    Timer(Duration(seconds: 6), () {
+    Timer(Duration(seconds: 4), () {
       Navigator.of(context).pushReplacementNamed('/home');
     });
   }
