@@ -24,7 +24,6 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
   }
 
   Future<void> _markDone() async {
-    // Optionally persist (no extra fields in Task model to update currently)
     await _repo.updateTask(_task);
 
     // add to global XP and handle leveling
@@ -37,6 +36,15 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _markFailed() async {
+    // Subtract HP when task is not completed
+    await _statsRepo.subtractHp(5);
+
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Task incompleted. HP -5')));
   }
 
   Future<void> _deleteTask() async {
@@ -214,6 +222,15 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                   children: [Text('Coins: ${_task.coinsReward}')],
                 ),
                 const Spacer(),
+                ElevatedButton.icon(
+                  onPressed: _markFailed,
+                  icon: const Icon(Icons.remove),
+                  label: const Text('-'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.orange,
+                  ),
+                ),
+                const SizedBox(width: 8),
                 ElevatedButton.icon(
                   onPressed: _markDone,
                   icon: const Icon(Icons.add),

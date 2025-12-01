@@ -140,7 +140,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text('Coins: $_coins', style: TextStyle(fontSize: 16)),
-                  Text('XP: $_xp', style: TextStyle(fontSize: 16)),
                 ],
               ),
               SizedBox(height: 32),

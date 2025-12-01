@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/top_navbar.dart';
 import '../widgets/bottom_navbar.dart';
 import '../widgets/xp_bar.dart';
+import '../widgets/hp_bar.dart';
 import '../services/user_stats_repository.dart';
 import '../models/user_stats.dart';
 
@@ -67,8 +68,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             else
               const Center(child: CircularProgressIndicator()),
             const SizedBox(height: 24),
+            if (_stats != null)
+              HpBar(currentHp: _stats!.totalHp, maxHp: _statsRepo.getMaxHp())
+            else
+              const Center(child: CircularProgressIndicator()),
+            const SizedBox(height: 24),
             Text('Total XP: ${_stats?.totalXp ?? 0}'),
             Text('Level: ${_stats?.level ?? 1}'),
+            Text('HP: ${_stats?.totalHp ?? 100}'),
             const SizedBox(height: 12),
             const Text('Other profile details go here...'),
           ],

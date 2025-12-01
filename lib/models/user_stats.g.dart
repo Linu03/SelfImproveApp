@@ -19,17 +19,20 @@ class UserStatsAdapter extends TypeAdapter<UserStats> {
     return UserStats(
       totalXp: fields[0] as int,
       level: fields[1] as int,
+      totalHp: (fields[2] as int?) ?? 100,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserStats obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.totalXp)
       ..writeByte(1)
-      ..write(obj.level);
+      ..write(obj.level)
+      ..writeByte(2)
+      ..write(obj.totalHp);
   }
 
   @override

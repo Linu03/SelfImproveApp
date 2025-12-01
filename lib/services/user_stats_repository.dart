@@ -42,4 +42,15 @@ class UserStatsRepository {
   int _xpForNextLevel(int level) => 100 * level;
 
   int xpForNextLevelOf(UserStats stats) => _xpForNextLevel(stats.level);
+
+  /// Subtract HP from total. Returns the updated UserStats.
+  Future<UserStats> subtractHp(int hpToSubtract) async {
+    final stats = await getStats();
+    stats.totalHp = (stats.totalHp - hpToSubtract).clamp(0, getMaxHp());
+    await saveStats(stats);
+    return stats;
+  }
+
+  /// Get maximum HP (constant value, can be modified as needed).
+  int getMaxHp() => 100;
 }

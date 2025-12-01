@@ -9,5 +9,8 @@ class UserStats extends HiveObject {
   @HiveField(1)
   int level;
 
-  UserStats({this.totalXp = 0, this.level = 1});
+  @HiveField(2)
+  int totalHp;
+
+  UserStats({this.totalXp = 0, this.level = 1, this.totalHp = 100});
 }
