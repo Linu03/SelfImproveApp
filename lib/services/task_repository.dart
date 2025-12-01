@@ -20,4 +20,14 @@ class TaskRepository {
 
   // Backwards-compatible alias requested by callers: getAllTasks
   Future<List<Task>> getAllTasks() async => getTasks();
+
+  Future<void> updateTask(Task task) async {
+    final box = await openBox();
+    await box.put(task.id, task);
+  }
+
+  Future<void> deleteTask(String id) async {
+    final box = await openBox();
+    await box.delete(id);
+  }
 }

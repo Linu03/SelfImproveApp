@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/bottom_navbar.dart';
 import '../widgets/top_navbar.dart';
 import '../models/task.dart';
+import 'task_detail_page.dart';
 import '../services/task_repository.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -211,12 +212,16 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               trailing: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text('${task.coinsReward} 💰'),
-                                  Text('${task.xpReward} XP'),
-                                ],
+                                children: [Text('${task.coinsReward} 💰')],
                               ),
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => TaskDetailPage(task: task),
+                                  ),
+                                );
+                              },
                             ),
                           ),
                         );

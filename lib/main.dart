@@ -8,6 +8,7 @@ import './pages/add_task_screen.dart';
 import './pages/profile_screen.dart';
 import './pages/shop_screen.dart';
 import './models/task.dart';
+import './models/user_stats.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,7 +16,9 @@ Future<void> main() async {
   Hive.registerAdapter(TaskFrequencyAdapter());
   Hive.registerAdapter(TaskDifficultyAdapter());
   Hive.registerAdapter(TaskAdapter());
+  Hive.registerAdapter(UserStatsAdapter());
   await Hive.openBox<Task>('tasksBox');
+  await Hive.openBox<UserStats>('userBox');
   runApp(MyApp());
 }
 
