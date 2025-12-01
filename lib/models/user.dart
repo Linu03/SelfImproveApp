@@ -6,7 +6,7 @@ import 'task.dart';
 class User {
   String id;
   String username;    // custom name of user
-  String avatarUrl;   // link to avatar image
+  // String avatarUrl;   // link to avatar image
   int hpBar;          // health points
   int xpBar;          // experience points
   List<SkillCategory> skills;  // list of user skills
@@ -17,7 +17,7 @@ class User {
   User({
     required this.id,
     required this.username,
-    required this.avatarUrl,
+    // required this.avatarUrl,
     this.xpBar = 0,
     this.hpBar = 100,
     this.skills = const [],

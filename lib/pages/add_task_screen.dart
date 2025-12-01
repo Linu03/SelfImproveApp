@@ -1,42 +1,10 @@
 import 'package:flutter/material.dart';
-import '../widgets/bottom_navbar.dart';
-import '../widgets/top_navbar.dart';
 
-class AddTaskScreen extends StatefulWidget {
-  @override
-  _AddTaskScreenState createState() => _AddTaskScreenState();
-}
+// Înlocuiește conținutul acestui fișier cu:
+// import 'add_task_screen_hive.dart';
+// și folosește AddTaskScreen din acel fișier pentru implementarea cu Hive.
+//
+// Pentru generarea adapterelor Hive rulează în terminal:
+// flutter pub run build_runner build --delete-conflicting-outputs
 
-class _AddTaskScreenState extends State<AddTaskScreen> {
-  int? _currentIndex = 1; // already on Add Task
-
-  void _onNavTap(int index) {
-    switch (index) {
-      case 0:
-        Navigator.pushReplacementNamed(context, '/home');
-        break;
-      case 1:
-        break;
-      case 2:
-        Navigator.pushReplacementNamed(context, '/journal');
-        break;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: TopNavbar(
-        onUserTap: () => Navigator.pushNamed(context, '/profile'),
-        onShopTap: () => Navigator.pushNamed(context, '/shop'),
-      ),
-      body: Center(
-        child: Text('Add Task Screen', style: TextStyle(fontSize: 24)),
-      ),
-      bottomNavigationBar: BottomNavbar(
-        currentIndex: _currentIndex,
-        onTap: _onNavTap,
-      ),
-    );
-  }
-}
+export '../pages/add_task_screen_hive.dart';

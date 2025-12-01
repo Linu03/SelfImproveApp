@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
+
+import 'package:hive_flutter/hive_flutter.dart';
 import './pages/splash_screen.dart';
 import './pages/home_screen.dart';
 import './pages/journal_screen.dart';
 import './pages/add_task_screen.dart';
 import './pages/profile_screen.dart';
 import './pages/shop_screen.dart';
+import './models/task.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  Hive.registerAdapter(TaskFrequencyAdapter());
+  Hive.registerAdapter(TaskDifficultyAdapter());
+  Hive.registerAdapter(TaskAdapter());
+  await Hive.openBox<Task>('tasksBox');
   runApp(MyApp());
 }
 

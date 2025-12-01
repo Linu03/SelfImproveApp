@@ -1,48 +1,69 @@
-import 'skill_category.dart';
+import 'package:hive/hive.dart';
+part 'task.g.dart';
 
+@HiveType(typeId: 0)
+enum TaskFrequency {
+  @HiveField(0)
+  daily,
+  @HiveField(1)
+  weekly,
+  @HiveField(2)
+  monthly,
+  @HiveField(3)
+  oneTime,
+}
 
-enum TaskFrequency { daily, weekly, monthly, oneTime }
+@HiveType(typeId: 1)
+enum TaskDifficulty {
+  @HiveField(0)
+  easy,
+  @HiveField(1)
+  medium,
+  @HiveField(2)
+  hard,
+}
 
-enum TaskDifficulty { easy, medium, hard }
-
-class Task {
+@HiveType(typeId: 2)
+class Task extends HiveObject {
+  @HiveField(0)
   String id;
+
+  @HiveField(1)
   String title;
-  String description;
+
+  @HiveField(2)
+  String? description;
+
+  @HiveField(3)
   TaskFrequency frequency;
+
+  @HiveField(4)
   TaskDifficulty difficulty;
-  DateTime? lastCompleted;
-  int streak;
-  bool completedToday;
-  int rewardCoins;
-  List<SkillCategory> categoryEffects;
+
+  @HiveField(5)
+  int coinsReward;
+
+  @HiveField(6)
+  int xpReward;
 
   Task({
     required this.id,
     required this.title,
-    required this.description,
+    this.description,
     required this.frequency,
     required this.difficulty,
-    this.lastCompleted,
-    this.streak = 0,
-    this.completedToday = false,
-    this.rewardCoins = 0,
-    this.categoryEffects = const [],
+    required this.coinsReward,
+    required this.xpReward,
   });
 
-  void calculateReward() {
-    int rewardCoins;
+  static Map<String, int> getRewards(TaskDifficulty difficulty) {
     switch (difficulty) {
       case TaskDifficulty.easy:
-        rewardCoins = 10;
-        break;
+        return {'coins': 5, 'xp': 10};
       case TaskDifficulty.medium:
-        rewardCoins = 25;
-        break;
+        return {'coins': 10, 'xp': 25};
       case TaskDifficulty.hard:
-        rewardCoins = 50;
-        break;
+        return {'coins': 20, 'xp': 50};
     }
-    // rewardCoins = baseReward + (streak * 2);
   }
 }
