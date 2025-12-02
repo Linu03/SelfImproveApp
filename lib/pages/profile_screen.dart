@@ -193,7 +193,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               shape: BoxShape.circle,
                                               boxShadow: [
                                                 BoxShadow(
-                                                  color: Colors.black.withValues(alpha: 0.2),
+                                                  color: Colors.black
+                                                      .withValues(alpha: 0.2),
                                                   blurRadius: 4,
                                                 ),
                                               ],
@@ -210,20 +211,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ),
                                     const SizedBox(width: 16),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Text('Welcome back!', style: TextStyle(fontSize: 14, color: Colors.grey.shade700)),
+                                        Text(
+                                          'Welcome back!',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.grey.shade700,
+                                          ),
+                                        ),
                                         const SizedBox(height: 4),
                                         Text(
                                           _username,
-                                          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                                          style: const TextStyle(
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
                                       ],
                                     ),
                                   ],
                                 ),
                                 IconButton(
-                                  icon: const Icon(Icons.edit, color: Colors.indigo),
+                                  icon: const Icon(
+                                    Icons.edit,
+                                    color: Colors.indigo,
+                                  ),
                                   onPressed: _editUsername,
                                   tooltip: 'Edit profile',
                                 ),
@@ -236,30 +250,47 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Text('Stats', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                                const Text(
+                                  'Stats',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                                 Row(
                                   children: [
                                     if (_stats != null)
-                                      Chip(backgroundColor: Colors.amber.shade100, label: Text('Level ${_stats!.level}')),
+                                      Chip(
+                                        backgroundColor: Colors.amber.shade100,
+                                        label: Text('Level ${_stats!.level}'),
+                                      ),
                                     const SizedBox(width: 8),
                                     if (_stats != null)
-                                      Chip(backgroundColor: Colors.blue.shade50, label: Text('XP ${_stats!.totalXp}')),
+                                      Chip(
+                                        backgroundColor: Colors.blue.shade50,
+                                        label: Text('XP ${_stats!.totalXp}'),
+                                      ),
                                   ],
-                                )
+                                ),
                               ],
                             ),
                             const SizedBox(height: 12),
                             if (_stats != null)
                               XpBar(
                                 currentXp: _stats!.totalXp,
-                                xpForNextLevel: _statsRepo.xpForNextLevelOf(_stats!),
+                                xpForNextLevel: _statsRepo.xpForNextLevelOf(
+                                  _stats!,
+                                ),
                                 level: _stats!.level,
                               )
                             else
                               const Center(child: CircularProgressIndicator()),
                             const SizedBox(height: 16),
                             if (_stats != null)
-                              HpBar(currentHp: _stats!.totalHp, maxHp: _statsRepo.getMaxHp())
+                              HpBar(
+                                currentHp: _stats!.totalHp,
+                                maxHp: _statsRepo.getMaxHp(),
+                              )
                             else
                               const SizedBox.shrink(),
                             const SizedBox(height: 16),

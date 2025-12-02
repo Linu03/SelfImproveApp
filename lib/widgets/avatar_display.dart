@@ -23,10 +23,7 @@ class AvatarDisplay extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: borderColor != null
-            ? Border.all(
-                color: borderColor!,
-                width: borderWidth ?? 3,
-              )
+            ? Border.all(color: borderColor!, width: borderWidth ?? 3)
             : null,
         gradient: avatarBytes == null
             ? const LinearGradient(

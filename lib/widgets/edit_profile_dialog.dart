@@ -86,9 +86,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       backgroundColor: Colors.white.withValues(alpha: 0.98),
       child: SingleChildScrollView(
         child: Padding(
@@ -132,7 +130,10 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                           ],
                         ),
                         child: IconButton(
-                          icon: const Icon(Icons.camera_alt, color: Colors.white),
+                          icon: const Icon(
+                            Icons.camera_alt,
+                            color: Colors.white,
+                          ),
                           onPressed: _pickImage,
                           iconSize: 20,
                           constraints: const BoxConstraints(
@@ -149,7 +150,8 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
               const SizedBox(height: 12),
 
               // Remove avatar button (only show if avatar exists)
-              if (_selectedAvatarBytes != null && _selectedAvatarBytes!.isNotEmpty)
+              if (_selectedAvatarBytes != null &&
+                  _selectedAvatarBytes!.isNotEmpty)
                 TextButton.icon(
                   onPressed: _removeAvatar,
                   icon: const Icon(Icons.delete_outline),
@@ -178,7 +180,10 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: Colors.indigo, width: 2),
+                    borderSide: const BorderSide(
+                      color: Colors.indigo,
+                      width: 2,
+                    ),
                   ),
                   prefixIcon: const Icon(Icons.person, color: Colors.indigo),
                   contentPadding: const EdgeInsets.symmetric(
@@ -201,10 +206,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                       ),
                       child: const Text(
                         'Cancel',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.grey,
-                        ),
+                        style: TextStyle(fontSize: 16, color: Colors.grey),
                       ),
                     ),
                   ),
