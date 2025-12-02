@@ -1,38 +1,38 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_stats.dart';
+part of 'category_xp.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class UserStatsAdapter extends TypeAdapter<UserStats> {
+class CategoryXpAdapter extends TypeAdapter<CategoryXp> {
   @override
-  final int typeId = 3;
+  final int typeId = 5;
 
   @override
-  UserStats read(BinaryReader reader) {
+  CategoryXp read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return UserStats(
-      totalXp: fields[0] as int,
-      level: fields[1] as int,
-      totalHp: fields[2] as int,
+    return CategoryXp(
+      categoryName: fields[0] as String,
+      totalXp: fields[1] as int,
+      level: fields[2] as int,
     );
   }
 
   @override
-  void write(BinaryWriter writer, UserStats obj) {
+  void write(BinaryWriter writer, CategoryXp obj) {
     writer
       ..writeByte(3)
       ..writeByte(0)
-      ..write(obj.totalXp)
+      ..write(obj.categoryName)
       ..writeByte(1)
-      ..write(obj.level)
+      ..write(obj.totalXp)
       ..writeByte(2)
-      ..write(obj.totalHp);
+      ..write(obj.level);
   }
 
   @override
@@ -41,7 +41,7 @@ class UserStatsAdapter extends TypeAdapter<UserStats> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is UserStatsAdapter &&
+      other is CategoryXpAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

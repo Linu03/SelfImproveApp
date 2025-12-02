@@ -30,6 +30,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   final _descriptionController = TextEditingController();
   TaskFrequency _frequency = TaskFrequency.daily;
   TaskDifficulty _difficulty = TaskDifficulty.easy;
+  TaskCategory _category = TaskCategory.physical;
   int _coins = 5;
   int _xp = 10;
   bool _saving = false;
@@ -55,6 +56,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       difficulty: _difficulty,
       coinsReward: _coins,
       xpReward: _xp,
+      category: _category,
     );
     await TaskRepository().addTask(task);
     setState(() => _saving = false);
@@ -133,6 +135,22 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     setState(() => _difficulty = val);
                     _updateRewards(val);
                   }
+                },
+              ),
+              SizedBox(height: 16),
+              DropdownButtonFormField<TaskCategory>(
+                value: _category,
+                decoration: InputDecoration(labelText: 'Category'),
+                items: TaskCategory.values
+                    .map(
+                      (c) => DropdownMenuItem(
+                        value: c,
+                        child: Text(Task.getCategoryLabel(c)),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (val) {
+                  if (val != null) setState(() => _category = val);
                 },
               ),
               SizedBox(height: 24),

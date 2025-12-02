@@ -128,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ? const Center(child: CircularProgressIndicator())
                 : _filteredTasks.isEmpty
                 ? const Center(
-                    child: Text('Nu există task-uri pentru filtrul selectat.'),
+                    child: Text('No tasks found. Add some tasks!'),
                   )
                 : RefreshIndicator(
                     onRefresh: _loadTasks,
@@ -154,18 +154,18 @@ class _HomeScreenState extends State<HomeScreen> {
                             return await showDialog<bool>(
                               context: context,
                               builder: (ctx) => AlertDialog(
-                                title: const Text('Șterge task'),
+                                title: const Text('Delete Task'),
                                 content: Text(
-                                  'Ești sigur că vrei să ștergi "${task.title}"?',
+                                  'Are you sure you want to delete "${task.title}"?',
                                 ),
                                 actions: [
                                   TextButton(
                                     onPressed: () => Navigator.pop(ctx, false),
-                                    child: const Text('Anulează'),
+                                    child: const Text('Cancel'),
                                   ),
                                   TextButton(
                                     onPressed: () => Navigator.pop(ctx, true),
-                                    child: const Text('Șterge'),
+                                    child: const Text('Delete'),
                                   ),
                                 ],
                               ),

@@ -1,5 +1,7 @@
 import 'package:hive/hive.dart';
 import '../models/user_stats.dart';
+import '../models/task.dart';
+import 'category_xp_repository.dart';
 
 class UserStatsRepository {
   static const String boxName = 'userBox';
@@ -24,8 +26,9 @@ class UserStatsRepository {
     await box.put(statsKey, stats);
   }
 
-  /// Add XP and handle leveling. Returns the updated UserStats.
-  Future<UserStats> addXp(int xpToAdd) async {
+  /// Add XP and handle leveling. Also add XP to the category if provided.
+  /// Returns the updated UserStats.
+  Future<UserStats> addXp(int xpToAdd, {TaskCategory? category}) async {
     final stats = await getStats();
     stats.totalXp += xpToAdd;
 
@@ -36,6 +39,12 @@ class UserStatsRepository {
     }
 
     await saveStats(stats);
+
+    // Also add XP to category if provided
+    if (category != null) {
+      await CategoryXpRepository().addXpToCategory(category, xpToAdd);
+    }
+
     return stats;
   }
 

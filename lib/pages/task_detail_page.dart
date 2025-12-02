@@ -25,13 +25,13 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
 
   Future<void> _markDone() async {
     await _repo.updateTask(_task);
-    await _statsRepo.addXp(_task.xpReward);
+    await _statsRepo.addXp(_task.xpReward, category: _task.category);
 
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          '✅ Global XP +${_task.xpReward}, Coins +${_task.coinsReward}',
+          '✅ Global XP +${_task.xpReward}, ${Task.getCategoryLabel(_task.category)} +${_task.xpReward}',
         ),
         behavior: SnackBarBehavior.floating,
         backgroundColor: Colors.green.shade700,
@@ -157,11 +157,14 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                   final t = Task(
                     id: _task.id,
                     title: titleController.text.trim(),
-                    description: descController.text.trim().isEmpty ? null : descController.text.trim(),
+                    description: descController.text.trim().isEmpty
+                        ? null
+                        : descController.text.trim(),
                     frequency: freq,
                     difficulty: diff,
                     coinsReward: _task.coinsReward,
                     xpReward: _task.xpReward,
+                    category: _task.category,
                   );
                   Navigator.pop(ctx, t);
                 }
