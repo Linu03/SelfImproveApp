@@ -31,6 +31,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final Set<TaskCategory> _usedCategories = {};
   String _username = 'Player';
   List<int>? _avatarBytes;
+  int _coins = 0;
 
   late Box<Task> _tasksBox;
   late VoidCallback _tasksListener;
@@ -59,6 +60,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final s = await _statsRepo.getStats();
     final u = await _profileRepo.getUsername();
     final a = await _profileRepo.getAvatarBytes();
+    final c = await _profileRepo.getCoins();
 
     // Determine used categories from tasks stored in Hive
     final tasks = _tasksBox.values.toList();
@@ -76,6 +78,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _stats = s;
       _username = u;
       _avatarBytes = a;
+      _coins = c;
       _categoryStats = catStats;
       _usedCategories
         ..clear()
@@ -270,6 +273,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         backgroundColor: Colors.blue.shade50,
                                         label: Text('XP ${_stats!.totalXp}'),
                                       ),
+                                    const SizedBox(width: 8),
+                                    // Coins chip
+                                    Chip(
+                                      backgroundColor: Colors.green.shade50,
+                                      avatar: const Icon(
+                                        Icons.monetization_on,
+                                        size: 18,
+                                        color: Colors.green,
+                                      ),
+                                      label: Text('$_coins'),
+                                    ),
                                   ],
                                 ),
                               ],

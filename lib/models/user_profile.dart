@@ -10,5 +10,8 @@ class UserProfile extends HiveObject {
   @HiveField(1)
   List<int>? avatarBytes;
 
-  UserProfile({this.username = 'Player', this.avatarBytes});
+  @HiveField(2)
+  int coins;
+
+  UserProfile({this.username = 'Player', this.avatarBytes, this.coins = 0});
 }

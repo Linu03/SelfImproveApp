@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/task.dart';
 import '../services/task_repository.dart';
 import '../services/user_stats_repository.dart';
+import '../services/user_profile_repository.dart';
 
 class TaskDetailPage extends StatefulWidget {
   final Task task;
@@ -15,6 +16,7 @@ class TaskDetailPage extends StatefulWidget {
 class _TaskDetailPageState extends State<TaskDetailPage> {
   final TaskRepository _repo = TaskRepository();
   final UserStatsRepository _statsRepo = UserStatsRepository();
+  final UserProfileRepository _profileRepo = UserProfileRepository();
   late Task _task;
 
   @override
@@ -26,12 +28,18 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
   Future<void> _markDone() async {
     await _repo.updateTask(_task);
     await _statsRepo.addXp(_task.xpReward, category: _task.category);
+    // Award coins to the user
+    try {
+      await _profileRepo.addCoins(_task.coinsReward);
+    } catch (e) {
+      // ignore errors but continue
+    }
 
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          '✅ Global XP +${_task.xpReward}, ${Task.getCategoryLabel(_task.category)} +${_task.xpReward}',
+          '✅ Global XP +${_task.xpReward} • +${_task.coinsReward} coins • ${Task.getCategoryLabel(_task.category)} +${_task.xpReward}',
         ),
         behavior: SnackBarBehavior.floating,
         backgroundColor: Colors.green.shade700,

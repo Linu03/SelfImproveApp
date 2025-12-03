@@ -51,4 +51,22 @@ class UserProfileRepository {
     profile.avatarBytes = null;
     await saveProfile(profile);
   }
+
+  // Coins methods
+  Future<int> getCoins() async {
+    final profile = await getProfile();
+    return profile.coins;
+  }
+
+  Future<void> setCoins(int value) async {
+    final profile = await getProfile();
+    profile.coins = value;
+    await saveProfile(profile);
+  }
+
+  Future<void> addCoins(int delta) async {
+    final profile = await getProfile();
+    profile.coins = (profile.coins) + delta;
+    await saveProfile(profile);
+  }
 }
