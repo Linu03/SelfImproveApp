@@ -22,11 +22,8 @@ Future<void> main() async {
   Hive.registerAdapter(UserStatsAdapter());
   Hive.registerAdapter(CategoryXpAdapter());
   Hive.registerAdapter(UserProfileAdapter());
- 
+
   await Hive.openBox<Task>('tasksBox');
-  try {
-    await Hive.deleteBoxFromDisk('userBox');
-  } catch (e) {}
   await Hive.openBox<UserStats>('userBox');
   await Hive.openBox<CategoryXp>('categoryXpBox');
   await Hive.openBox<UserProfile>('userProfileBox');

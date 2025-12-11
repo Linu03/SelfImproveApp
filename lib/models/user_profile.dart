@@ -13,5 +13,13 @@ class UserProfile extends HiveObject {
   @HiveField(2)
   int coins;
 
-  UserProfile({this.username = 'Player', this.avatarBytes, this.coins = 0});
+  @HiveField(3)
+  int entertainmentMinutes;
+
+  UserProfile({
+    this.username = 'Player',
+    this.avatarBytes,
+    this.coins = 0,
+    this.entertainmentMinutes = 0,
+  });
 }

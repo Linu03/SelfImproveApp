@@ -69,4 +69,23 @@ class UserProfileRepository {
     profile.coins = (profile.coins) + delta;
     await saveProfile(profile);
   }
+
+  // Entertainment minutes methods
+  Future<int> getEntertainmentMinutes() async {
+    final profile = await getProfile();
+    return profile.entertainmentMinutes;
+  }
+
+  Future<void> setEntertainmentMinutes(int minutes) async {
+    final profile = await getProfile();
+    profile.entertainmentMinutes = minutes;
+    await saveProfile(profile);
+  }
+
+  Future<void> addEntertainmentMinutes(int delta) async {
+    final profile = await getProfile();
+    profile.entertainmentMinutes = (profile.entertainmentMinutes) + delta;
+    if (profile.entertainmentMinutes < 0) profile.entertainmentMinutes = 0;
+    await saveProfile(profile);
+  }
 }
