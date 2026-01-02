@@ -5,7 +5,7 @@ import '../widgets/bottom_navbar.dart';
 import '../models/reward_item.dart';
 import '../services/user_profile_repository.dart';
 import '../services/task_repository.dart';
-
+import '../pages/my_rewards_screen.dart';
 
 class ShopScreen extends StatefulWidget {
   @override
@@ -403,10 +403,36 @@ class _ShopScreenState extends State<ShopScreen> {
                 ),
               ],
             ),
-            Icon(
-              Icons.monetization_on,
-              size: 56,
-              color: Colors.white.withValues(alpha: 0.6),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.monetization_on,
+                  size: 56,
+                  color: Colors.white.withOpacity(0.95),
+                ),
+                const SizedBox(height: 8),
+                SizedBox(
+                  height: 34,
+                  child: ElevatedButton.icon(
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => MyRewardsScreen()),
+                    ),
+                    icon: const Icon(Icons.card_giftcard, size: 18),
+                    label: const Text('My Rewards'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.indigo,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 6,
+                      ),
+                      visualDensity: VisualDensity.compact,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

@@ -1,4 +1,3 @@
-
 part of 'reward_item.dart';
 
 // ***************************************************************************
@@ -20,13 +19,16 @@ class RewardItemAdapter extends TypeAdapter<RewardItem> {
       price: fields[1] as int,
       durationMinutes: fields[2] as int?,
       category: fields[3] as String,
+      isActive: fields[4] as bool? ?? false,
+      startTime: fields[5] as DateTime?,
+      remainingMinutes: fields[6] as int? ?? (fields[2] as int? ?? 0),
     );
   }
 
   @override
   void write(BinaryWriter writer, RewardItem obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -34,7 +36,13 @@ class RewardItemAdapter extends TypeAdapter<RewardItem> {
       ..writeByte(2)
       ..write(obj.durationMinutes)
       ..writeByte(3)
-      ..write(obj.category);
+      ..write(obj.category)
+      ..writeByte(4)
+      ..write(obj.isActive)
+      ..writeByte(5)
+      ..write(obj.startTime)
+      ..writeByte(6)
+      ..write(obj.remainingMinutes);
   }
 
   @override
