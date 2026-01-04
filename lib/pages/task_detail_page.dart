@@ -64,6 +64,20 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
   Future<void> _markFailed() async {
     await _statsRepo.subtractHp(5);
 
+    // Record the failed task in the journal (record negative XP)
+    try {
+      await JournalService.addCompletedTask(
+        when: DateTime.now(),
+        taskName: _task.title,
+        category: Task.getCategoryLabel(_task.category),
+        xpEarned: -_task.xpReward,
+        coinsEarned: 0,
+        completed: false,
+      );
+    } catch (e) {
+      // ignore
+    }
+
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

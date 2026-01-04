@@ -35,19 +35,25 @@ class JournalDetailScreen extends StatelessWidget {
               const SizedBox(height: 16),
               if (entry.completedTasks.isNotEmpty) ...[
                 Text(
-                  'Completed Tasks',
+                  'Tasks',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 8),
                 ...entry.completedTasks.map(
                   (c) => ListTile(
-                    leading: const Icon(
-                      Icons.check_circle,
-                      color: Colors.green,
+                    leading: Icon(
+                      c.completed ? Icons.check_circle : Icons.cancel,
+                      color: c.completed ? Colors.green : Colors.red,
                     ),
                     title: Text(c.taskName),
                     subtitle: Text('${c.category} • ${c.completedAt}'),
-                    trailing: Text('+${c.xpEarned}xp • +${c.coinsEarned}'),
+                    trailing: Text(
+                      '${c.xpEarned > 0 ? '+' : ''}${c.xpEarned}xp • ${c.coinsEarned >= 0 ? '+' : ''}${c.coinsEarned}',
+                      style: TextStyle(
+                        color: c.xpEarned >= 0 ? Colors.green : Colors.red,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 12),

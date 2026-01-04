@@ -6,6 +6,7 @@ class CompletedTaskSnapshot {
   final int xpEarned;
   final int coinsEarned;
   final String completedAt; // hh:mm
+  final bool completed; // true = completed (+XP), false = failed (-XP)
 
   CompletedTaskSnapshot({
     required this.taskName,
@@ -13,6 +14,7 @@ class CompletedTaskSnapshot {
     required this.xpEarned,
     required this.coinsEarned,
     required this.completedAt,
+    this.completed = true,
   });
 }
 

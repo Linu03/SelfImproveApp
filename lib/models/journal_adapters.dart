@@ -13,12 +13,14 @@ class CompletedTaskSnapshotAdapter extends TypeAdapter<CompletedTaskSnapshot> {
     final xpEarned = reader.readInt();
     final coinsEarned = reader.readInt();
     final completedAt = reader.readString();
+    final completed = reader.readBool();
     return CompletedTaskSnapshot(
       taskName: taskName,
       category: category,
       xpEarned: xpEarned,
       coinsEarned: coinsEarned,
       completedAt: completedAt,
+      completed: completed,
     );
   }
 
@@ -29,6 +31,7 @@ class CompletedTaskSnapshotAdapter extends TypeAdapter<CompletedTaskSnapshot> {
     writer.writeInt(obj.xpEarned);
     writer.writeInt(obj.coinsEarned);
     writer.writeString(obj.completedAt);
+    writer.writeBool(obj.completed);
   }
 }
 

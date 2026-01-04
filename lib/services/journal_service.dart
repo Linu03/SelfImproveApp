@@ -35,6 +35,7 @@ class JournalService {
     required String category,
     required int xpEarned,
     required int coinsEarned,
+    bool completed = true,
   }) async {
     final entry = await getOrCreateForDate(when);
     final completedAt =
@@ -45,6 +46,7 @@ class JournalService {
       xpEarned: xpEarned,
       coinsEarned: coinsEarned,
       completedAt: completedAt,
+      completed: completed,
     );
     entry.completedTasks.add(snap);
     entry.totalXP += xpEarned;
