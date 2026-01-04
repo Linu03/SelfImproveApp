@@ -520,8 +520,14 @@ class _MyRewardsScreenState extends State<MyRewardsScreen>
           ? ValueListenableBuilder<Box<RewardItem>>(
               valueListenable: _activeBox.listenable(),
               builder: (context, box, _) {
-                final rewards = box.values.toList();
-                if (rewards.isEmpty) {
+                final keys = box.keys.where((k) {
+                  final reward = box.get(k);
+                  if (reward == null) return false;
+                  final expired =
+                      (!reward.isActive) && (reward.remainingMinutes == 0);
+                  return !expired;
+                }).toList();
+                if (keys.isEmpty) {
                   return Center(
                     child: Text('No rewards yet. Buy them from the Shop!'),
                   );
@@ -533,12 +539,12 @@ class _MyRewardsScreenState extends State<MyRewardsScreen>
                         onRefresh: () async => _reconcileActiveRewards(),
                         child: ListView.separated(
                           padding: const EdgeInsets.all(16),
-                          itemCount: rewards.length,
+                          itemCount: keys.length,
                           separatorBuilder: (_, __) =>
                               const SizedBox(height: 12),
                           itemBuilder: (context, index) {
-                            final reward = rewards[index];
-                            final key = box.keyAt(index);
+                            final key = keys[index];
+                            final reward = box.get(key)!;
                             final currentRemaining =
                                 _getCurrentRemainingSeconds(reward);
                             final totalSeconds =
