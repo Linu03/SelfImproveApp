@@ -3,6 +3,7 @@ import '../models/task.dart';
 import '../services/task_repository.dart';
 import '../services/user_stats_repository.dart';
 import '../services/user_profile_repository.dart';
+import '../services/journal_service.dart';
 
 class TaskDetailPage extends StatefulWidget {
   final Task task;
@@ -33,6 +34,19 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
       await _profileRepo.addCoins(_task.coinsReward);
     } catch (e) {
       // ignore errors but continue
+    }
+
+    // Persist snapshot to journal
+    try {
+      await JournalService.addCompletedTask(
+        when: DateTime.now(),
+        taskName: _task.title,
+        category: Task.getCategoryLabel(_task.category),
+        xpEarned: _task.xpReward,
+        coinsEarned: _task.coinsReward,
+      );
+    } catch (e) {
+      // ignore journal errors
     }
 
     if (!mounted) return;

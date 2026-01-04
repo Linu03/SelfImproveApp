@@ -13,6 +13,7 @@ import '../services/exact_alarm_service.dart';
 
 import '../models/reward_item.dart';
 import '../services/reward_background.dart';
+import '../services/journal_service.dart';
 import '../widgets/top_navbar.dart';
 import '../widgets/bottom_navbar.dart';
 
@@ -417,11 +418,29 @@ class _MyRewardsScreenState extends State<MyRewardsScreen>
 
       print('[MyRewards] _expireReward: expiring reward $key (${reward.name})');
 
+      // Capture metadata for journal before modifying the reward
+      final startedAt = reward.startTime;
+      final durationMinutes = reward.remainingMinutes;
+
       // Mark expired in Hive
       reward.isActive = false;
       reward.startTime = null;
       reward.remainingMinutes = 0;
       await reward.save();
+
+      // Record used reward in journal
+      try {
+        if (startedAt != null) {
+          await JournalService.addUsedReward(
+            startedAt: startedAt,
+            finishedAt: DateTime.now(),
+            rewardName: reward.name,
+            durationMinutes: durationMinutes,
+          );
+        }
+      } catch (e) {
+        // ignore journal errors
+      }
 
       // Cancel scheduled notification/alarm
       final id = _notifIdForKey(key);

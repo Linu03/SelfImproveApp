@@ -1,8 +1,8 @@
-import 'dart:io';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../models/reward_item.dart';
+import 'journal_service.dart';
 
 // This callback runs in a background isolate (Android Alarm Manager).
 // It will scan activeRewardsBox and mark any rewards whose end time has
@@ -20,6 +20,13 @@ Future<void> expireDueRewardsCallback() async {
 
     final box = await Hive.openBox<RewardItem>('activeRewardsBox');
     final now = DateTime.now();
+
+    // Ensure journal adapters/box are ready in this isolate
+    try {
+      await JournalService.init();
+    } catch (e) {
+      // ignore
+    }
 
     // Prepare notifications for background (Android isolate)
     final FlutterLocalNotificationsPlugin notifications =
@@ -52,11 +59,28 @@ Future<void> expireDueRewardsCallback() async {
         final elapsed = now.difference(r.startTime!).inSeconds;
         final initialSeconds = r.remainingMinutes * 60;
         if (elapsed >= initialSeconds) {
+          final startedAt = r.startTime;
+          final durationMinutes = r.remainingMinutes;
+
           r.isActive = false;
           r.startTime = null;
           r.remainingMinutes = 0;
           await r.save();
           expiredKeys.add(key);
+
+          // Record in journal
+          try {
+            if (startedAt != null) {
+              await JournalService.addUsedReward(
+                startedAt: startedAt,
+                finishedAt: DateTime.now(),
+                rewardName: r.name,
+                durationMinutes: durationMinutes,
+              );
+            }
+          } catch (e) {
+            // ignore
+          }
 
           // Show notification for this expired reward
           final androidDetails = AndroidNotificationDetails(

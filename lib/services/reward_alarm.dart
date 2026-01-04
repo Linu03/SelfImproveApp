@@ -4,6 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hive/hive.dart';
 
 import '../models/reward_item.dart';
+import 'journal_service.dart';
 
 @pragma('vm:entry-point')
 // This callback runs in the background isolate on Android when the alarm fires.
@@ -22,11 +23,29 @@ Future<void> rewardAlarmCallback(int id) async {
   final box = await Hive.openBox<RewardItem>('activeRewardsBox');
   final reward = box.get(id);
   if (reward != null && reward.isActive) {
+    final startedAt = reward.startTime;
+    final durationMinutes = reward.remainingMinutes;
+
     // Mark expired
     reward.isActive = false;
     reward.startTime = null;
     reward.remainingMinutes = 0;
     await reward.save();
+
+    // Record in journal
+    try {
+      if (startedAt != null) {
+        await JournalService.init();
+        await JournalService.addUsedReward(
+          startedAt: startedAt,
+          finishedAt: DateTime.now(),
+          rewardName: reward.name,
+          durationMinutes: durationMinutes,
+        );
+      }
+    } catch (e) {
+      // ignore
+    }
   }
 
   // Initialize notifications in this isolate and show notification

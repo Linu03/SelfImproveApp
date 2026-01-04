@@ -11,10 +11,9 @@ import './pages/my_rewards_screen.dart';
 import './models/task.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import './models/user_stats.dart';
+import './services/journal_service.dart';
 import './models/category_xp.dart';
 import './models/user_profile.dart';
-import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart'
-    as aam;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,6 +30,13 @@ Future<void> main() async {
   await Hive.openBox<UserStats>('userBox');
   await Hive.openBox<CategoryXp>('categoryXpBox');
   await Hive.openBox<UserProfile>('userProfileBox');
+
+  // Initialize journal storage
+  try {
+    await JournalService.init();
+  } catch (e) {
+    // ignore journal init errors
+  }
 
   // Initialize Android alarm manager for background reward expirations
   try {
