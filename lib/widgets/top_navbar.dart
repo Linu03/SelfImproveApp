@@ -24,22 +24,36 @@ class TopNavbar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       centerTitle: true,
-      elevation: 4,
+      elevation: 0,
+      backgroundColor: Colors.transparent,
       flexibleSpace: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color.fromARGB(255, 20, 93, 154), Colors.indigo],
+            colors: [
+              const Color(0xFF2d1b3d), // Dark purple matching Home Screen
+              const Color(0xFF1a1625), // Dark background matching Home Screen
+            ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.3),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
       ),
       leading: IconButton(
         icon: Icon(
           Icons.person,
-          color: userSelected ? Colors.amber : Colors.white,
+          color: userSelected ? Colors.amber.shade300 : Colors.grey.shade400,
+          size: 26,
         ),
         tooltip: 'Profile',
+        splashColor: Colors.amber.shade700.withOpacity(0.3),
+        highlightColor: Colors.amber.shade800.withOpacity(0.2),
         onPressed: () {
           if (onUserTap != null) return onUserTap!();
           if (onTap != null) return onTap!(0);
@@ -48,15 +62,19 @@ class TopNavbar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         IconButton(
           icon: Icon(
-            Icons.shopping_cart,
-            color: shopSelected ? Colors.amber : Colors.white,
+            Icons.shopping_bag,
+            color: shopSelected ? Colors.amber.shade300 : Colors.grey.shade400,
+            size: 26,
           ),
           tooltip: 'Shop',
+          splashColor: Colors.amber.shade700.withOpacity(0.3),
+          highlightColor: Colors.amber.shade800.withOpacity(0.2),
           onPressed: () {
             if (onShopTap != null) return onShopTap!();
             if (onTap != null) return onTap!(1);
           },
         ),
+        const SizedBox(width: 4),
       ],
     );
   }
