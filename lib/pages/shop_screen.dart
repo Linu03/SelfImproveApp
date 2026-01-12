@@ -132,7 +132,7 @@ class _ShopScreenState extends State<ShopScreen> {
     if (coins < reward.price) {
       _showSnackBar(
         'Not enough coins! Need ${reward.price}, you have $coins.',
-        Colors.red,
+        Colors.red.shade700,
       );
       return;
     }
@@ -159,7 +159,7 @@ class _ShopScreenState extends State<ShopScreen> {
     if (mounted) {
       _showSnackBar(
         '🎉 Unlocked "${reward.name}"! -${reward.price} coins',
-        Colors.green,
+        Colors.green.shade700,
       );
     }
   }
@@ -167,10 +167,19 @@ class _ShopScreenState extends State<ShopScreen> {
   void _showSnackBar(String message, Color bgColor) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(message),
+        content: Text(
+          message,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
         backgroundColor: bgColor,
         behavior: SnackBarBehavior.floating,
         duration: const Duration(seconds: 3),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
       ),
     );
   }
@@ -185,7 +194,32 @@ class _ShopScreenState extends State<ShopScreen> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Create Your Own Reward'),
+        backgroundColor: const Color(0xFF2d1b3d),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(
+            color: Colors.purple.shade700,
+            width: 2,
+          ),
+        ),
+        title: Row(
+          children: [
+            Icon(
+              Icons.auto_awesome,
+              color: Colors.amber.shade300,
+              size: 24,
+            ),
+            const SizedBox(width: 12),
+            Text(
+              'Create Custom Reward',
+              style: TextStyle(
+                color: Colors.amber.shade200,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
+          ],
+        ),
         content: SingleChildScrollView(
           child: Form(
             key: formKey,
@@ -194,11 +228,32 @@ class _ShopScreenState extends State<ShopScreen> {
               children: [
                 TextFormField(
                   controller: nameCtrl,
+                  style: TextStyle(color: Colors.amber.shade100),
                   decoration: InputDecoration(
                     labelText: 'Reward name',
+                    labelStyle: TextStyle(color: Colors.amber.shade400),
                     hintText: 'e.g., Spotify playlist',
+                    hintStyle: TextStyle(color: Colors.grey.shade600),
+                    filled: true,
+                    fillColor: Colors.black.withOpacity(0.3),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: Colors.purple.shade700.withOpacity(0.3),
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: Colors.purple.shade700.withOpacity(0.3),
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: Colors.amber.shade700,
+                        width: 2,
+                      ),
                     ),
                   ),
                   validator: (v) =>
@@ -207,11 +262,32 @@ class _ShopScreenState extends State<ShopScreen> {
                 const SizedBox(height: 12),
                 TextFormField(
                   controller: priceCtrl,
+                  style: TextStyle(color: Colors.amber.shade100),
                   decoration: InputDecoration(
                     labelText: 'Cost (coins)',
+                    labelStyle: TextStyle(color: Colors.amber.shade400),
                     hintText: '5',
+                    hintStyle: TextStyle(color: Colors.grey.shade600),
+                    filled: true,
+                    fillColor: Colors.black.withOpacity(0.3),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: Colors.purple.shade700.withOpacity(0.3),
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: Colors.purple.shade700.withOpacity(0.3),
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: Colors.amber.shade700,
+                        width: 2,
+                      ),
                     ),
                   ),
                   keyboardType: TextInputType.number,
@@ -222,11 +298,32 @@ class _ShopScreenState extends State<ShopScreen> {
                 const SizedBox(height: 12),
                 TextFormField(
                   controller: durationCtrl,
+                  style: TextStyle(color: Colors.amber.shade100),
                   decoration: InputDecoration(
                     labelText: 'Duration (minutes, optional)',
+                    labelStyle: TextStyle(color: Colors.amber.shade400),
                     hintText: '30',
+                    hintStyle: TextStyle(color: Colors.grey.shade600),
+                    filled: true,
+                    fillColor: Colors.black.withOpacity(0.3),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: Colors.purple.shade700.withOpacity(0.3),
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: Colors.purple.shade700.withOpacity(0.3),
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: Colors.amber.shade700,
+                        width: 2,
+                      ),
                     ),
                   ),
                   keyboardType: TextInputType.number,
@@ -234,15 +331,42 @@ class _ShopScreenState extends State<ShopScreen> {
                 const SizedBox(height: 12),
                 DropdownButtonFormField<String>(
                   value: selectedCategory,
+                  dropdownColor: const Color(0xFF2d1b3d),
+                  style: TextStyle(color: Colors.cyan.shade300),
                   decoration: InputDecoration(
                     labelText: 'Category',
+                    labelStyle: TextStyle(color: Colors.amber.shade400),
+                    filled: true,
+                    fillColor: Colors.black.withOpacity(0.3),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: Colors.purple.shade700.withOpacity(0.3),
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: Colors.purple.shade700.withOpacity(0.3),
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: Colors.amber.shade700,
+                        width: 2,
+                      ),
                     ),
                   ),
                   items: ['Entertainment', 'Gaming', 'Streaming', 'Other']
                       .map(
-                        (cat) => DropdownMenuItem(value: cat, child: Text(cat)),
+                        (cat) => DropdownMenuItem(
+                          value: cat,
+                          child: Text(
+                            cat,
+                            style: TextStyle(color: Colors.cyan.shade300),
+                          ),
+                        ),
                       )
                       .toList(),
                   onChanged: (val) {
@@ -256,7 +380,10 @@ class _ShopScreenState extends State<ShopScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Cancel'),
+            child: Text(
+              'Cancel',
+              style: TextStyle(color: Colors.grey.shade400),
+            ),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -283,10 +410,14 @@ class _ShopScreenState extends State<ShopScreen> {
               Navigator.pop(ctx);
 
               if (mounted) {
-                _showSnackBar('✨ Reward "$name" created!', Colors.indigo);
+                _showSnackBar('✨ Reward "$name" created!', Colors.purple.shade700);
                 setState(() {});
               }
             },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.amber.shade700,
+              foregroundColor: Colors.white,
+            ),
             child: const Text('Create'),
           ),
         ],
@@ -297,6 +428,7 @@ class _ShopScreenState extends State<ShopScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF1a1625), // Dark fantasy background
       appBar: TopNavbar(
         shopSelected: true,
         onUserTap: () => Navigator.pushNamed(context, '/profile'),
@@ -307,47 +439,161 @@ class _ShopScreenState extends State<ShopScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Merchant Header
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      const Color(0xFF2d1b3d),
+                      const Color(0xFF1a1625),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: Colors.amber.shade700.withOpacity(0.3),
+                    width: 2,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.store,
+                      color: Colors.amber.shade300,
+                      size: 28,
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      'Merchant Shop',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.amber.shade200,
+                        letterSpacing: 1.2,
+                        shadows: [
+                          Shadow(
+                            color: Colors.black.withOpacity(0.5),
+                            offset: const Offset(0, 2),
+                            blurRadius: 4,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
               // === COINS BALANCE ===
               _buildCoinsBalance(),
               const SizedBox(height: 24),
 
               // === DEFAULT REWARDS ===
-              const Text(
-                'Recommended Rewards',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.indigo,
-                ),
+              Row(
+                children: [
+                  Icon(
+                    Icons.star,
+                    color: Colors.amber.shade400,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Featured Rewards',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.amber.shade300,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 12),
               _buildDefaultRewardsList(),
               const SizedBox(height: 24),
 
               // === CUSTOM REWARDS ===
-              const Text(
-                'Your Custom Rewards',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.indigo,
-                ),
+              Row(
+                children: [
+                  Icon(
+                    Icons.auto_awesome,
+                    color: Colors.purple.shade400,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Your Custom Rewards',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.purple.shade300,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 12),
               _buildCustomRewardsList(),
-              const SizedBox(height: 16),
+              const SizedBox(height: 20),
 
               // === CREATE BUTTON ===
-              SizedBox(
+              Container(
                 width: double.infinity,
-                child: ElevatedButton.icon(
-                  onPressed: _showCreateRewardDialog,
-                  icon: const Icon(Icons.add_circle_outline),
-                  label: const Text('Create Your Own Reward'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.indigo,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+                height: 52,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.purple.shade600,
+                      Colors.purple.shade800,
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.purple.shade900.withOpacity(0.5),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: _showCreateRewardDialog,
+                    borderRadius: BorderRadius.circular(16),
+                    splashColor: Colors.white.withOpacity(0.2),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.add_circle_outline,
+                          color: Colors.white,
+                          size: 22,
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          'CREATE CUSTOM REWARD',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            letterSpacing: 1.0,
+                            shadows: [
+                              Shadow(
+                                color: Colors.black.withOpacity(0.3),
+                                offset: const Offset(0, 2),
+                                blurRadius: 4,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -365,77 +611,127 @@ class _ShopScreenState extends State<ShopScreen> {
 
   /// Build coins balance card
   Widget _buildCoinsBalance() {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.amber.shade400, Colors.orange.shade400],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(12),
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Colors.amber.shade600,
+            Colors.amber.shade800,
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: Colors.amber.shade300.withOpacity(0.5),
+          width: 2,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.amber.shade900.withOpacity(0.4),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.all(20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Your Coins',
+                Row(
+                  children: [
+                    Icon(
+                      Icons.monetization_on,
+                      color: Colors.white.withOpacity(0.9),
+                      size: 20,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Your Gold',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.white.withOpacity(0.9),
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  '$_coins',
                   style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.white70,
-                    fontWeight: FontWeight.w500,
+                    fontSize: 36,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    shadows: [
+                      Shadow(
+                        color: Colors.black.withOpacity(0.3),
+                        offset: const Offset(0, 2),
+                        blurRadius: 4,
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  '$_coins',
-                  style: const TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                  'Coins Available',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.white.withOpacity(0.8),
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ],
             ),
-            Column(
+          ),
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(
-                  Icons.monetization_on,
-                  size: 56,
+                  Icons.card_giftcard,
+                  size: 40,
                   color: Colors.white.withOpacity(0.95),
                 ),
                 const SizedBox(height: 8),
-                SizedBox(
-                  height: 34,
-                  child: ElevatedButton.icon(
-                    onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => MyRewardsScreen()),
+                ElevatedButton(
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => MyRewardsScreen()),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF2d1b3d),
+                    foregroundColor: Colors.amber.shade300,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 8,
                     ),
-                    icon: const Icon(Icons.card_giftcard, size: 18),
-                    label: const Text('My Rewards'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.indigo,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 6,
-                      ),
-                      visualDensity: VisualDensity.compact,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: const Text(
+                    'My Rewards',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -443,7 +739,7 @@ class _ShopScreenState extends State<ShopScreen> {
   /// Build default rewards list (horizontal scroll)
   Widget _buildDefaultRewardsList() {
     return SizedBox(
-      height: 180,
+      height: 200,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: _defaultRewards.length,
@@ -463,7 +759,8 @@ class _ShopScreenState extends State<ShopScreen> {
         height: 200,
         child: Center(
           child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation(Colors.indigo.shade400),
+            color: Colors.purple.shade400,
+            strokeWidth: 3,
           ),
         ),
       );
@@ -478,8 +775,17 @@ class _ShopScreenState extends State<ShopScreen> {
           return Container(
             height: 150,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.grey.shade300, width: 2),
+              gradient: LinearGradient(
+                colors: [
+                  const Color(0xFF2d1b3d).withOpacity(0.5),
+                  const Color(0xFF1f1529).withOpacity(0.5),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: Colors.purple.shade800.withOpacity(0.3),
+                width: 2,
+              ),
             ),
             child: Center(
               child: Column(
@@ -487,22 +793,25 @@ class _ShopScreenState extends State<ShopScreen> {
                 children: [
                   Icon(
                     Icons.card_giftcard_outlined,
-                    size: 40,
-                    color: Colors.grey.shade400,
+                    size: 48,
+                    color: Colors.purple.shade700.withOpacity(0.5),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 12),
                   Text(
                     'No custom rewards yet',
                     style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey.shade600,
-                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                      color: Colors.grey.shade500,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 6),
                   Text(
                     'Create one below!',
-                    style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Colors.grey.shade600,
+                    ),
                   ),
                 ],
               ),
@@ -514,7 +823,7 @@ class _ShopScreenState extends State<ShopScreen> {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: items.length,
-          separatorBuilder: (_, __) => const SizedBox(height: 10),
+          separatorBuilder: (_, __) => const SizedBox(height: 12),
           itemBuilder: (context, index) {
             final reward = items[index];
             return _buildRewardCard(reward, isDefault: false);
@@ -528,12 +837,43 @@ class _ShopScreenState extends State<ShopScreen> {
   Widget _buildRewardCard(RewardItem reward, {required bool isDefault}) {
     final canBuy = _coins >= reward.price;
 
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+    return Material(
+      color: Colors.transparent,
       child: Container(
-        width: isDefault ? 160 : double.infinity,
-        padding: const EdgeInsets.all(12),
+        width: isDefault ? 170 : double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              const Color(0xFF2d1b3d),
+              const Color(0xFF1f1529),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: canBuy
+                ? Colors.green.shade600.withOpacity(0.4)
+                : Colors.grey.shade800.withOpacity(0.3),
+            width: 2,
+          ),
+          boxShadow: canBuy
+              ? [
+                  BoxShadow(
+                    color: Colors.green.shade900.withOpacity(0.3),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
+                  ),
+                ]
+              : [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.3),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+        ),
+        padding: const EdgeInsets.all(14),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -543,69 +883,147 @@ class _ShopScreenState extends State<ShopScreen> {
               reward.name,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+                color: canBuy ? Colors.amber.shade200 : Colors.grey.shade500,
+              ),
             ),
-            const SizedBox(height: 6),
+            const SizedBox(height: 8),
             // Category
-            Text(
-              reward.category,
-              style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: Colors.cyan.shade900.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(6),
+                border: Border.all(
+                  color: Colors.cyan.shade700.withOpacity(0.3),
+                ),
+              ),
+              child: Text(
+                reward.category,
+                style: TextStyle(
+                  fontSize: 11,
+                  color: Colors.cyan.shade400,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ),
             // Duration (if present)
             if (reward.durationMinutes != null && reward.durationMinutes! > 0)
               Padding(
-                padding: const EdgeInsets.only(top: 4),
+                padding: const EdgeInsets.only(top: 8),
                 child: Row(
                   children: [
                     Icon(
                       Icons.access_time,
-                      size: 12,
+                      size: 14,
                       color: Colors.blue.shade400,
                     ),
                     const SizedBox(width: 4),
                     Text(
                       '${reward.durationMinutes} min',
                       style: TextStyle(
-                        fontSize: 11,
-                        color: Colors.blue.shade400,
+                        fontSize: 12,
+                        color: Colors.blue.shade300,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],
                 ),
               ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 14),
             // Price and Buy button
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    Icon(
-                      Icons.monetization_on,
-                      size: 16,
-                      color: canBuy ? Colors.amber : Colors.grey,
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: canBuy
+                          ? [
+                              Colors.amber.shade700.withOpacity(0.3),
+                              Colors.amber.shade900.withOpacity(0.3),
+                            ]
+                          : [
+                              Colors.grey.shade800.withOpacity(0.3),
+                              Colors.grey.shade900.withOpacity(0.3),
+                            ],
                     ),
-                    const SizedBox(width: 4),
-                    Text(
-                      '${reward.price}',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: canBuy ? Colors.amber.shade700 : Colors.grey,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: canBuy
+                          ? Colors.amber.shade600.withOpacity(0.4)
+                          : Colors.grey.shade700.withOpacity(0.3),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.monetization_on,
+                        size: 16,
+                        color: canBuy ? Colors.amber.shade300 : Colors.grey.shade600,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        '${reward.price}',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: canBuy ? Colors.amber.shade200 : Colors.grey.shade600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  height: 34,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: canBuy
+                          ? [
+                              Colors.green.shade600,
+                              Colors.green.shade800,
+                            ]
+                          : [
+                              Colors.grey.shade700,
+                              Colors.grey.shade800,
+                            ],
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: canBuy
+                        ? [
+                            BoxShadow(
+                              color: Colors.green.shade900.withOpacity(0.5),
+                              blurRadius: 6,
+                              offset: const Offset(0, 2),
+                            ),
+                          ]
+                        : null,
+                  ),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: canBuy ? () => _buyReward(reward) : null,
+                      borderRadius: BorderRadius.circular(10),
+                      splashColor: Colors.white.withOpacity(0.2),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 14),
+                        child: Center(
+                          child: Text(
+                            'BUY',
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  ],
-                ),
-                SizedBox(
-                  height: 32,
-                  child: ElevatedButton(
-                    onPressed: canBuy ? () => _buyReward(reward) : null,
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      backgroundColor: canBuy ? Colors.indigo : Colors.grey,
-                    ),
-                    child: const Text('Buy', style: TextStyle(fontSize: 12)),
                   ),
                 ),
               ],
