@@ -352,7 +352,7 @@ class _MyRewardsScreenState extends State<MyRewardsScreen>
       }
     } catch (e) {
       print(
-        '[MyRewards] _scheduleNotificationById error for key=$key id=$id: $e',
+          '[MyRewards] _scheduleNotificationById error for key=$key id=$id: $e',
       );
     }
   }
@@ -363,7 +363,7 @@ class _MyRewardsScreenState extends State<MyRewardsScreen>
         : _notifIdForKey(key);
     if (id != null) {
       print(
-        '[MyRewards] Cancelling scheduled notification/alarm for key=$key id=$id',
+          '[MyRewards] Cancelling scheduled notification/alarm for key=$key id=$id',
       );
       try {
         await _notifications.cancel(id!);
@@ -507,7 +507,14 @@ class _MyRewardsScreenState extends State<MyRewardsScreen>
   Future<void> _activateReward(dynamic key, RewardItem reward) async {
     if (reward.remainingMinutes <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('No time left for ${reward.name}')),
+        SnackBar(
+          content: Text('No time left for ${reward.name}'),
+          backgroundColor: Colors.red.shade700,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
       );
       return;
     }
@@ -528,6 +535,7 @@ class _MyRewardsScreenState extends State<MyRewardsScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF1a1625), // Dark fantasy background
       appBar: TopNavbar(
         onUserTap: () => Navigator.pushNamed(context, '/profile'),
         onShopTap: () => Navigator.pushNamed(context, '/shop'),
@@ -548,19 +556,105 @@ class _MyRewardsScreenState extends State<MyRewardsScreen>
                 }).toList();
                 if (keys.isEmpty) {
                   return Center(
-                    child: Text('No rewards yet. Buy them from the Shop!'),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.inventory_2_outlined,
+                          size: 80,
+                          color: Colors.purple.shade700.withOpacity(0.5),
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          'Empty Inventory',
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey.shade400,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          'No rewards yet. Buy them from the Shop!',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey.shade500,
+                          ),
+                        ),
+                      ],
+                    ),
                   );
                 }
                 return Column(
                   children: [
+                    // Inventory Header
+                    Container(
+                      margin: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 16,
+                        horizontal: 20,
+                      ),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            const Color(0xFF2d1b3d),
+                            const Color(0xFF1a1625),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: Colors.purple.shade700.withOpacity(0.3),
+                          width: 2,
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.inventory_2,
+                            color: Colors.purple.shade300,
+                            size: 28,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Active Buffs & Consumables',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.purple.shade200,
+                                    letterSpacing: 0.5,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  '${keys.length} item${keys.length != 1 ? 's' : ''} in inventory',
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: Colors.purple.shade400,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
                     Expanded(
                       child: RefreshIndicator(
                         onRefresh: () async => _reconcileActiveRewards(),
+                        color: Colors.purple.shade400,
+                        backgroundColor: const Color(0xFF2d1b3d),
                         child: ListView.separated(
-                          padding: const EdgeInsets.all(16),
+                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                           itemCount: keys.length,
                           separatorBuilder: (_, __) =>
-                              const SizedBox(height: 12),
+                              const SizedBox(height: 14),
                           itemBuilder: (context, index) {
                             final key = keys[index];
                             final reward = box.get(key)!;
@@ -581,140 +675,341 @@ class _MyRewardsScreenState extends State<MyRewardsScreen>
                                 (!reward.isActive) &&
                                 (reward.remainingMinutes == 0);
 
-                            return Opacity(
-                              opacity: expired ? 0.45 : 1.0,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      Colors.indigo.shade600,
-                                      Colors.blue.shade700,
-                                    ],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                  ),
-                                  borderRadius: BorderRadius.circular(12),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.15),
-                                      blurRadius: 6,
-                                      offset: Offset(0, 3),
-                                    ),
+                            return Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    const Color(0xFF2d1b3d),
+                                    const Color(0xFF1f1529),
                                   ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
                                 ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  reward.name,
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 6),
-                                                Text(
-                                                  'Total: ${reward.durationMinutes ?? reward.remainingMinutes} min',
-                                                  style: TextStyle(
-                                                    color: Colors.white70,
-                                                  ),
-                                                ),
-                                              ],
+                                borderRadius: BorderRadius.circular(16),
+                                border: Border.all(
+                                  color: reward.isActive
+                                      ? Colors.green.shade600.withOpacity(0.5)
+                                      : Colors.purple.shade800.withOpacity(0.3),
+                                  width: 2,
+                                ),
+                                boxShadow: reward.isActive
+                                    ? [
+                                        BoxShadow(
+                                          color: Colors.green.shade900
+                                              .withOpacity(0.3),
+                                          blurRadius: 12,
+                                          offset: const Offset(0, 4),
+                                        ),
+                                      ]
+                                    : [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.3),
+                                          blurRadius: 8,
+                                          offset: const Offset(0, 2),
+                                        ),
+                                      ],
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        // Status Icon
+                                        Container(
+                                          padding: const EdgeInsets.all(8),
+                                          decoration: BoxDecoration(
+                                            color: reward.isActive
+                                                ? Colors.green.shade900
+                                                    .withOpacity(0.3)
+                                                : Colors.grey.shade900
+                                                    .withOpacity(0.3),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            border: Border.all(
+                                              color: reward.isActive
+                                                  ? Colors.green.shade600
+                                                      .withOpacity(0.4)
+                                                  : Colors.grey.shade700
+                                                      .withOpacity(0.3),
                                             ),
                                           ),
-                                          if (expired)
-                                            Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                    horizontal: 8,
-                                                    vertical: 4,
-                                                  ),
-                                              decoration: BoxDecoration(
-                                                color: Colors.grey.shade900
-                                                    .withOpacity(0.6),
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                              ),
-                                              child: Text(
-                                                'Expired',
+                                          child: Icon(
+                                            reward.isActive
+                                                ? Icons.flash_on
+                                                : Icons.hourglass_empty,
+                                            color: reward.isActive
+                                                ? Colors.green.shade300
+                                                : Colors.grey.shade500,
+                                            size: 24,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 14),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                reward.name,
                                                 style: TextStyle(
-                                                  color: Colors.white,
+                                                  color: reward.isActive
+                                                      ? Colors.amber.shade200
+                                                      : Colors.grey.shade300,
+                                                  fontSize: 17,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 6),
+                                              Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.access_time,
+                                                    size: 14,
+                                                    color: Colors.cyan.shade400,
+                                                  ),
+                                                  const SizedBox(width: 4),
+                                                  Text(
+                                                    'Total: ${reward.durationMinutes ?? reward.remainingMinutes} min',
+                                                    style: TextStyle(
+                                                      color:
+                                                          Colors.cyan.shade400,
+                                                      fontSize: 13,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        // Status Badge
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 10,
+                                            vertical: 6,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            gradient: LinearGradient(
+                                              colors: reward.isActive
+                                                  ? [
+                                                      Colors.green.shade600,
+                                                      Colors.green.shade800,
+                                                    ]
+                                                  : [
+                                                      Colors.grey.shade700,
+                                                      Colors.grey.shade800,
+                                                    ],
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            boxShadow: reward.isActive
+                                                ? [
+                                                    BoxShadow(
+                                                      color: Colors
+                                                          .green.shade900
+                                                          .withOpacity(0.5),
+                                                      blurRadius: 6,
+                                                      offset:
+                                                          const Offset(0, 2),
+                                                    ),
+                                                  ]
+                                                : null,
+                                          ),
+                                          child: Text(
+                                            reward.isActive
+                                                ? 'ACTIVE'
+                                                : 'READY',
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 11,
+                                              fontWeight: FontWeight.bold,
+                                              letterSpacing: 0.5,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 16),
+                                    if (reward.isActive)
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          // Progress Bar
+                                          Container(
+                                            height: 12,
+                                            decoration: BoxDecoration(
+                                              color: Colors.black
+                                                  .withOpacity(0.3),
+                                              borderRadius:
+                                                  BorderRadius.circular(6),
+                                              border: Border.all(
+                                                color: Colors.green.shade900
+                                                    .withOpacity(0.3),
+                                              ),
+                                            ),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(6),
+                                              child: LinearProgressIndicator(
+                                                value: progress,
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                valueColor:
+                                                    AlwaysStoppedAnimation<
+                                                        Color>(
+                                                  Colors.green.shade400,
                                                 ),
                                               ),
                                             ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 12),
-                                      if (reward.isActive)
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            LinearProgressIndicator(
-                                              value: progress,
-                                              minHeight: 10,
-                                              backgroundColor: Colors.white24,
-                                              valueColor:
-                                                  AlwaysStoppedAnimation<Color>(
-                                                    Colors.amber.shade400,
+                                          ),
+                                          const SizedBox(height: 10),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.timer,
+                                                    size: 16,
+                                                    color:
+                                                        Colors.green.shade300,
                                                   ),
-                                            ),
-                                            const SizedBox(height: 8),
-                                            Text(
-                                              'Remaining: ${_formatSeconds(currentRemaining)}',
-                                              style: TextStyle(
-                                                color: Colors.white70,
+                                                  const SizedBox(width: 6),
+                                                  Text(
+                                                    'Remaining: ${_formatSeconds(currentRemaining)}',
+                                                    style: TextStyle(
+                                                      color: Colors
+                                                          .green.shade200,
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            ),
-                                          ],
-                                        )
-                                      else
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              'Remaining: ${_formatSeconds(currentRemaining)}',
-                                              style: TextStyle(
-                                                color: Colors.white70,
+                                              Text(
+                                                '${(progress * 100).toInt()}%',
+                                                style: TextStyle(
+                                                  color: Colors.green.shade400,
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
                                               ),
-                                            ),
-                                            ElevatedButton(
-                                              onPressed:
-                                                  (expired ||
+                                            ],
+                                          ),
+                                        ],
+                                      )
+                                    else
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.schedule,
+                                                size: 16,
+                                                color: Colors.grey.shade500,
+                                              ),
+                                              const SizedBox(width: 6),
+                                              Text(
+                                                'Available: ${_formatSeconds(currentRemaining)}',
+                                                style: TextStyle(
+                                                  color: Colors.grey.shade400,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Container(
+                                            height: 38,
+                                            decoration: BoxDecoration(
+                                              gradient: LinearGradient(
+                                                colors: (expired ||
+                                                        reward.remainingMinutes <=
+                                                            0)
+                                                    ? [
+                                                        Colors.grey.shade700,
+                                                        Colors.grey.shade800,
+                                                      ]
+                                                    : [
+                                                        Colors.amber.shade600,
+                                                        Colors.amber.shade800,
+                                                      ],
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              boxShadow: (expired ||
                                                       reward.remainingMinutes <=
                                                           0)
                                                   ? null
-                                                  : () => _activateReward(
-                                                      key,
-                                                      reward,
+                                                  : [
+                                                      BoxShadow(
+                                                        color: Colors
+                                                            .amber.shade900
+                                                            .withOpacity(0.5),
+                                                        blurRadius: 8,
+                                                        offset:
+                                                            const Offset(0, 2),
+                                                      ),
+                                                    ],
+                                            ),
+                                            child: Material(
+                                              color: Colors.transparent,
+                                              child: InkWell(
+                                                onTap: (expired ||
+                                                        reward.remainingMinutes <=
+                                                            0)
+                                                    ? null
+                                                    : () => _activateReward(
+                                                        key, reward),
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                splashColor: Colors.white
+                                                    .withOpacity(0.2),
+                                                child: Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                    horizontal: 20,
+                                                  ),
+                                                  child: Center(
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        Icon(
+                                                          Icons.play_arrow,
+                                                          color: Colors.white,
+                                                          size: 20,
+                                                        ),
+                                                        const SizedBox(width: 6),
+                                                        Text(
+                                                          'START',
+                                                          style: TextStyle(
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: Colors.white,
+                                                            letterSpacing: 0.8,
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor:
-                                                    Colors.amber.shade400,
-                                                foregroundColor: Colors.black87,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
+                                                  ),
                                                 ),
                                               ),
-                                              child: Text('Start'),
                                             ),
-                                          ],
-                                        ),
-                                    ],
-                                  ),
+                                          ),
+                                        ],
+                                      ),
+                                  ],
                                 ),
                               ),
                             );
@@ -726,7 +1021,12 @@ class _MyRewardsScreenState extends State<MyRewardsScreen>
                 );
               },
             )
-          : Center(child: CircularProgressIndicator()),
+          : Center(
+              child: CircularProgressIndicator(
+                color: Colors.purple.shade400,
+                strokeWidth: 3,
+              ),
+            ),
       bottomNavigationBar: BottomNavbar(
         currentIndex: 0,
         onTap: (i) {
