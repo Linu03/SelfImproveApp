@@ -17,7 +17,14 @@ class HpBar extends StatelessWidget {
       children: [
         Row(
           children: [
-            const Text('HP', style: TextStyle(fontWeight: FontWeight.bold)),
+            Text(
+              'HP',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.red.shade400,
+                fontSize: 14,
+              ),
+            ),
             const SizedBox(width: 12),
             Expanded(
               child: LinearProgressIndicator(
@@ -28,7 +35,10 @@ class HpBar extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 12),
-            Text('$currentHp / $maxHp'),
+            Text(
+              '$currentHp / $maxHp',
+              style: TextStyle(color: Colors.red.shade400, fontSize: 13),
+            ),
           ],
         ),
       ],

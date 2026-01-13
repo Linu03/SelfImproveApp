@@ -25,14 +25,21 @@ class XpBar extends StatelessWidget {
           children: [
             Text(
               'Level $level',
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.amber.shade200,
+                fontSize: 14,
+              ),
             ),
             const SizedBox(width: 12),
             Expanded(
               child: LinearProgressIndicator(value: progress, minHeight: 12),
             ),
             const SizedBox(width: 12),
-            Text('$currentXp / $xpForNextLevel'),
+            Text(
+              '$currentXp / $xpForNextLevel',
+              style: TextStyle(color: Colors.amber.shade200, fontSize: 13),
+            ),
           ],
         ),
       ],

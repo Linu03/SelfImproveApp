@@ -139,257 +139,408 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final gradient = const LinearGradient(
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-      colors: [Color.fromARGB(255, 20, 93, 154), Colors.indigo],
-    );
-
     return Scaffold(
-      body: Stack(
+      backgroundColor: const Color(0xFF1a1625), // Dark fantasy background
+      appBar: TopNavbar(
+        userSelected: true,
+        onShopTap: () => Navigator.pushNamed(context, '/shop'),
+      ),
+      body: Column(
         children: [
-          // background gradient
-          Container(decoration: BoxDecoration(gradient: gradient)),
-          SafeArea(
-            child: Column(
+          // Profile Header
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [const Color(0xFF2d1b3d), const Color(0xFF1a1625)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
+            child: Row(
               children: [
-                TopNavbar(
-                  userSelected: true,
-                  onShopTap: () => Navigator.pushNamed(context, '/shop'),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0,
-                      vertical: 8.0,
-                    ),
-                    child: Card(
-                      color: Colors.white.withValues(alpha: 0.95),
-                      elevation: 8,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
+                Icon(Icons.person, color: Colors.amber.shade300, size: 28),
+                const SizedBox(width: 12),
+                Text(
+                  'Character Profile',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.amber.shade200,
+                    letterSpacing: 1.2,
+                    shadows: [
+                      Shadow(
+                        color: Colors.amber.shade900.withOpacity(0.5),
+                        offset: const Offset(0, 2),
+                        blurRadius: 4,
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Avatar and Username section with edit button
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    Stack(
-                                      children: [
-                                        AvatarDisplay(
-                                          avatarBytes: _avatarBytes,
-                                          radius: 40,
-                                          borderColor: Colors.indigo.shade300,
-                                        ),
-                                        Positioned(
-                                          bottom: 0,
-                                          right: 0,
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.indigo,
-                                              shape: BoxShape.circle,
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.black
-                                                      .withValues(alpha: 0.2),
-                                                  blurRadius: 4,
-                                                ),
-                                              ],
-                                            ),
-                                            padding: const EdgeInsets.all(4),
-                                            child: const Icon(
-                                              Icons.camera_alt,
-                                              size: 14,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(width: 16),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Welcome back!',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.grey.shade700,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 4),
-                                        Text(
-                                          _username,
-                                          style: const TextStyle(
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                IconButton(
-                                  icon: const Icon(
-                                    Icons.edit,
-                                    color: Colors.indigo,
-                                  ),
-                                  onPressed: _editUsername,
-                                  tooltip: 'Edit profile',
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 12),
-                            const Divider(),
-                            const SizedBox(height: 12),
-                            // Profile stats
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text(
-                                  'Stats',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Row(
-                                  children: [
-                                    if (_stats != null)
-                                      Chip(
-                                        backgroundColor: Colors.amber.shade100,
-                                        label: Text('Level ${_stats!.level}'),
-                                      ),
-                                    const SizedBox(width: 8),
-                                    if (_stats != null)
-                                      Chip(
-                                        backgroundColor: Colors.blue.shade50,
-                                        label: Text('XP ${_stats!.totalXp}'),
-                                      ),
-                                    const SizedBox(width: 8),
-                                    // Coins chip
-                                    Chip(
-                                      backgroundColor: Colors.green.shade50,
-                                      avatar: const Icon(
-                                        Icons.monetization_on,
-                                        size: 18,
-                                        color: Colors.green,
-                                      ),
-                                      label: Text('$_coins'),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 12),
-                            if (_stats != null)
-                              XpBar(
-                                currentXp: _stats!.totalXp,
-                                xpForNextLevel: _statsRepo.xpForNextLevelOf(
-                                  _stats!,
-                                ),
-                                level: _stats!.level,
-                              )
-                            else
-                              const Center(child: CircularProgressIndicator()),
-                            const SizedBox(height: 16),
-                            if (_stats != null)
-                              HpBar(
-                                currentHp: _stats!.totalHp,
-                                maxHp: _statsRepo.getMaxHp(),
-                              )
-                            else
-                              const SizedBox.shrink(),
-                            const SizedBox(height: 16),
-                            const Divider(),
-                            const SizedBox(height: 8),
-                            const Text(
-                              'Category Progress',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            // If no categories used show hint
-                            if (_usedCategories.isEmpty)
-                              Expanded(
-                                child: Center(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(
-                                        Icons.category_outlined,
-                                        size: 56,
-                                        color: Colors.grey.shade400,
-                                      ),
-                                      const SizedBox(height: 8),
-                                      Text(
-                                        'No categories yet',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey.shade700,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 6),
-                                      Text(
-                                        'Create tasks to see category XP bars appear here.',
-                                        style: TextStyle(
-                                          fontSize: 13,
-                                          color: Colors.grey.shade600,
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                            else
-                              Expanded(
-                                child: RefreshIndicator(
-                                  onRefresh: _reloadFromHive,
-                                  color: Colors.indigo,
-                                  backgroundColor: Colors.white,
-                                  child: GridView.builder(
-                                    padding: const EdgeInsets.only(
-                                      top: 8,
-                                      bottom: 8,
-                                    ),
-                                    gridDelegate:
-                                        const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2,
-                                          mainAxisSpacing: 12,
-                                          crossAxisSpacing: 12,
-                                          childAspectRatio: 2.6,
-                                        ),
-                                    itemCount: _usedCategories.length,
-                                    itemBuilder: (context, index) {
-                                      final category = _usedCategories
-                                          .elementAt(index);
-                                      final stats = _categoryStats[category];
-                                      return CategoryXpBar(
-                                        category: category,
-                                        stats: stats,
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 8),
               ],
+            ),
+          ),
+
+          // Profile Content
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Avatar and Username Card
+                  Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          const Color(0xFF2d1b3d),
+                          const Color(0xFF1f1529),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: Colors.purple.shade700.withOpacity(0.3),
+                        width: 2,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.amber.shade900.withOpacity(0.2),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    padding: const EdgeInsets.all(20),
+                    child: Row(
+                      children: [
+                        Stack(
+                          children: [
+                            AvatarDisplay(
+                              avatarBytes: _avatarBytes,
+                              radius: 40,
+                              borderColor: Colors.amber.shade300,
+                            ),
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.amber.shade600,
+                                  shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.amber.shade900.withOpacity(
+                                        0.4,
+                                      ),
+                                      blurRadius: 4,
+                                    ),
+                                  ],
+                                ),
+                                padding: const EdgeInsets.all(4),
+                                child: const Icon(
+                                  Icons.camera_alt,
+                                  size: 14,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Welcome back!',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey.shade400,
+                                  letterSpacing: 0.5,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                _username,
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.amber.shade200,
+                                  letterSpacing: 0.5,
+                                  shadows: [
+                                    Shadow(
+                                      color: Colors.black.withOpacity(0.5),
+                                      offset: const Offset(0, 1),
+                                      blurRadius: 2,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.edit, color: Colors.amber.shade300),
+                          onPressed: _editUsername,
+                          tooltip: 'Edit profile',
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  // Stats Section
+                  Text(
+                    'Stats',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.amber.shade200,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+
+                  // Stats Chips
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        if (_stats != null)
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.amber.shade700.withOpacity(0.3),
+                                  Colors.amber.shade900.withOpacity(0.3),
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: Colors.amber.shade400.withOpacity(0.4),
+                                width: 1,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.grade,
+                                  size: 16,
+                                  color: Colors.amber.shade300,
+                                ),
+                                const SizedBox(width: 6),
+                                Text(
+                                  'Level ${_stats!.level}',
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        const SizedBox(width: 8),
+                        if (_stats != null)
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.purple.shade700.withOpacity(0.3),
+                                  Colors.purple.shade900.withOpacity(0.3),
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: Colors.purple.shade400.withOpacity(0.4),
+                                width: 1,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.star,
+                                  size: 16,
+                                  color: Colors.purple.shade300,
+                                ),
+                                const SizedBox(width: 6),
+                                Text(
+                                  'XP ${_stats!.totalXp}',
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        const SizedBox(width: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 8,
+                          ),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.yellow.shade700.withOpacity(0.3),
+                                Colors.yellow.shade900.withOpacity(0.3),
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: Colors.yellow.shade600.withOpacity(0.4),
+                              width: 1,
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.monetization_on,
+                                size: 16,
+                                color: Colors.yellow.shade300,
+                              ),
+                              const SizedBox(width: 6),
+                              Text(
+                                '$_coins',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.yellow.shade200,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  // XP Bar
+                  if (_stats != null)
+                    XpBar(
+                      currentXp: _stats!.totalXp,
+                      xpForNextLevel: _statsRepo.xpForNextLevelOf(_stats!),
+                      level: _stats!.level,
+                    )
+                  else
+                    Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.amber.shade300,
+                        strokeWidth: 3,
+                      ),
+                    ),
+
+                  const SizedBox(height: 16),
+
+                  // HP Bar
+                  if (_stats != null)
+                    HpBar(
+                      currentHp: _stats!.totalHp,
+                      maxHp: _statsRepo.getMaxHp(),
+                    )
+                  else
+                    const SizedBox.shrink(),
+
+                  const SizedBox(height: 24),
+
+                  // Category Progress Section
+                  Text(
+                    'Category Progress',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.amber.shade200,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+
+                  // If no categories used show hint
+                  if (_usedCategories.isEmpty)
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            const Color(0xFF2d1b3d),
+                            const Color(0xFF1f1529),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: Colors.purple.shade700.withOpacity(0.3),
+                          width: 2,
+                        ),
+                      ),
+                      padding: const EdgeInsets.all(32),
+                      child: Column(
+                        children: [
+                          Icon(
+                            Icons.category_outlined,
+                            size: 56,
+                            color: Colors.purple.shade800.withOpacity(0.5),
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            'No categories yet',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.grey.shade500,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Create tasks to see category XP bars appear here.',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey.shade600,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    )
+                  else
+                    GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: const EdgeInsets.only(top: 8, bottom: 8),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 12,
+                            crossAxisSpacing: 12,
+                            childAspectRatio: 2.6,
+                          ),
+                      itemCount: _usedCategories.length,
+                      itemBuilder: (context, index) {
+                        final category = _usedCategories.elementAt(index);
+                        final stats = _categoryStats[category];
+                        return CategoryXpBar(category: category, stats: stats);
+                      },
+                    ),
+                ],
+              ),
             ),
           ),
         ],
