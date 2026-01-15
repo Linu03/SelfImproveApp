@@ -281,60 +281,148 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        // Full-screen gradient background
-        Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                const Color.fromARGB(255, 20, 93, 154),
-                Colors.indigo.shade300,
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+    return Scaffold(
+      backgroundColor: const Color(0xFF1a1625),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            // Background gradient
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    const Color(0xFF1a1625),
+                    const Color(0xFF2d1b3d),
+                    const Color(0xFF1a1625),
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: const [0.0, 0.5, 1.0],
+                ),
+              ),
             ),
-          ),
-        ),
 
-        // Content
-        Scaffold(
-          backgroundColor: Colors.transparent,
-          body: SafeArea(
-            child: SingleChildScrollView(
+            // Decorative orbs
+            Positioned(
+              top: 100,
+              right: 20,
+              child: Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: RadialGradient(
+                    colors: [
+                      Colors.purple.shade600.withOpacity(0.15),
+                      Colors.transparent,
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 200,
+              left: 10,
+              child: Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: RadialGradient(
+                    colors: [
+                      Colors.indigo.shade600.withOpacity(0.15),
+                      Colors.transparent,
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+            // Content
+            SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,
                   vertical: 12,
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Header with back button
+                    // Back button
                     Row(
                       children: [
-                        IconButton(
-                          icon: const Icon(
-                            Icons.arrow_back,
-                            color: Colors.white,
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.purple.shade800.withOpacity(0.4),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: Colors.purple.shade600.withOpacity(0.5),
+                            ),
                           ),
-                          onPressed: () => Navigator.pop(context),
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.arrow_back,
+                              color: Colors.amber.shade300,
+                              size: 24,
+                            ),
+                            onPressed: () => Navigator.pop(context),
+                            constraints: const BoxConstraints(minHeight: 40),
+                          ),
                         ),
-                        const Expanded(child: SizedBox()),
                       ],
                     ),
 
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 24),
 
-                    // Title
+                    // Title with RPG styling
                     Text(
                       _task.title,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        letterSpacing: 0.5,
+                      style: TextStyle(
+                        fontSize: 36,
+                        fontWeight: FontWeight.w900,
+                        color: Colors.amber.shade200,
+                        letterSpacing: 1.0,
+                        shadows: [
+                          Shadow(
+                            color: Colors.amber.shade900.withOpacity(0.6),
+                            offset: const Offset(0, 2),
+                            blurRadius: 6,
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    // Category badge
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.purple.shade700,
+                            Colors.indigo.shade700,
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.purple.shade900.withOpacity(0.5),
+                            blurRadius: 6,
+                          ),
+                        ],
+                      ),
+                      child: Text(
+                        Task.getCategoryLabel(_task.category),
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.amber.shade200,
+                          letterSpacing: 0.5,
+                        ),
                       ),
                     ),
 
@@ -343,108 +431,202 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                     // Description Card
                     if (_task.description != null &&
                         _task.description!.isNotEmpty)
-                      Card(
-                        elevation: 6,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: Colors.white,
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: Colors.purple.shade700.withOpacity(0.4),
+                            width: 1.5,
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Description',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                _task.description!,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black87,
-                                  height: 1.5,
-                                ),
-                              ),
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.purple.shade900.withOpacity(0.2),
+                              Colors.indigo.shade900.withOpacity(0.1),
                             ],
                           ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.purple.shade900.withOpacity(0.2),
+                              blurRadius: 8,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Quest Details',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.amber.shade400,
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              _task.description!,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey.shade300,
+                                height: 1.6,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
 
                     const SizedBox(height: 24),
 
-                    // Frequency & Difficulty Badges
+                    // Frequency & Difficulty Row
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Frequency Badge
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            color: _getFrequencyColor(_task.frequency),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.schedule,
-                                color: Colors.white,
-                                size: 18,
+                        Expanded(
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 12,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(14),
+                              border: Border.all(
+                                color: _getFrequencyColor(
+                                  _task.frequency,
+                                ).withOpacity(0.6),
+                                width: 1.5,
                               ),
-                              const SizedBox(width: 8),
-                              Text(
-                                _getFrequencyLabel(_task.frequency),
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 14,
+                              gradient: LinearGradient(
+                                colors: [
+                                  _getFrequencyColor(
+                                    _task.frequency,
+                                  ).withOpacity(0.15),
+                                  _getFrequencyColor(
+                                    _task.frequency,
+                                  ).withOpacity(0.05),
+                                ],
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: _getFrequencyColor(
+                                    _task.frequency,
+                                  ).withOpacity(0.2),
+                                  blurRadius: 6,
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Frequency',
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.grey.shade400,
+                                    letterSpacing: 0.3,
+                                  ),
+                                ),
+                                const SizedBox(height: 6),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.schedule,
+                                      color: _getFrequencyColor(
+                                        _task.frequency,
+                                      ),
+                                      size: 16,
+                                    ),
+                                    const SizedBox(width: 6),
+                                    Text(
+                                      _getFrequencyLabel(_task.frequency),
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                        color: _getFrequencyColor(
+                                          _task.frequency,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-
                         const SizedBox(width: 12),
-
-                        // Difficulty Badge
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            color: _getDifficultyColor(_task.difficulty),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.whatshot,
-                                color: Colors.white,
-                                size: 18,
+                        Expanded(
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 12,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(14),
+                              border: Border.all(
+                                color: _getDifficultyColor(
+                                  _task.difficulty,
+                                ).withOpacity(0.6),
+                                width: 1.5,
                               ),
-                              const SizedBox(width: 8),
-                              Text(
-                                _getDifficultyLabel(_task.difficulty),
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 14,
+                              gradient: LinearGradient(
+                                colors: [
+                                  _getDifficultyColor(
+                                    _task.difficulty,
+                                  ).withOpacity(0.15),
+                                  _getDifficultyColor(
+                                    _task.difficulty,
+                                  ).withOpacity(0.05),
+                                ],
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: _getDifficultyColor(
+                                    _task.difficulty,
+                                  ).withOpacity(0.2),
+                                  blurRadius: 6,
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Difficulty',
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.grey.shade400,
+                                    letterSpacing: 0.3,
+                                  ),
+                                ),
+                                const SizedBox(height: 6),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.whatshot,
+                                      color: _getDifficultyColor(
+                                        _task.difficulty,
+                                      ),
+                                      size: 16,
+                                    ),
+                                    const SizedBox(width: 6),
+                                    Text(
+                                      _getDifficultyLabel(_task.difficulty),
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                        color: _getDifficultyColor(
+                                          _task.difficulty,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],
@@ -453,77 +635,106 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                     const SizedBox(height: 24),
 
                     // Rewards Card
-                    Card(
-                      elevation: 6,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          gradient: LinearGradient(
-                            colors: [
-                              Colors.amber.shade400,
-                              Colors.amber.shade600,
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              children: [
-                                const Text(
-                                  '💰 Coins',
-                                  style: TextStyle(
-                                    color: Colors.white70,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                const SizedBox(height: 6),
-                                Text(
-                                  '${_task.coinsReward}',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Container(
-                              width: 2,
-                              height: 50,
-                              color: Colors.white30,
-                            ),
-                            Column(
-                              children: [
-                                const Text(
-                                  '⭐ XP',
-                                  style: TextStyle(
-                                    color: Colors.white70,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                const SizedBox(height: 6),
-                                Text(
-                                  '${_task.xpReward}',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.amber.shade900.withOpacity(0.4),
+                            Colors.amber.shade700.withOpacity(0.2),
                           ],
                         ),
+                        border: Border.all(
+                          color: Colors.amber.shade600.withOpacity(0.5),
+                          width: 2,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.amber.shade900.withOpacity(0.4),
+                            blurRadius: 12,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Quest Rewards',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.amber.shade300,
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Column(
+                                children: [
+                                  Icon(
+                                    Icons.monetization_on,
+                                    color: Colors.amber.shade300,
+                                    size: 28,
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    '${_task.coinsReward}',
+                                    style: TextStyle(
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.w900,
+                                      color: Colors.amber.shade200,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    'Coins',
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.amber.shade400,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                width: 1.5,
+                                height: 60,
+                                color: Colors.amber.shade600.withOpacity(0.3),
+                              ),
+                              Column(
+                                children: [
+                                  Icon(
+                                    Icons.star,
+                                    color: Colors.amber.shade300,
+                                    size: 28,
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    '${_task.xpReward}',
+                                    style: TextStyle(
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.w900,
+                                      color: Colors.amber.shade200,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    'XP',
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.amber.shade400,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
 
@@ -532,7 +743,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                     // Action Buttons
                     Column(
                       children: [
-                        // Complete Button (Primary)
+                        // Complete Button
                         SizedBox(
                           width: double.infinity,
                           height: 56,
@@ -540,18 +751,22 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                             onPressed: _markDone,
                             icon: const Icon(Icons.check_circle, size: 24),
                             label: const Text(
-                              'Complete Task (+XP)',
+                              'Complete Quest',
                               style: TextStyle(
                                 fontSize: 16,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 0.5,
                               ),
                             ),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green.shade500,
+                              backgroundColor: Colors.green.shade600,
                               foregroundColor: Colors.white,
-                              elevation: 6,
+                              elevation: 8,
+                              shadowColor: Colors.green.shade900.withOpacity(
+                                0.6,
+                              ),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(14),
                               ),
                             ),
                           ),
@@ -559,7 +774,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
 
                         const SizedBox(height: 12),
 
-                        // Failed Button (Secondary)
+                        // Failed Button
                         SizedBox(
                           width: double.infinity,
                           height: 56,
@@ -567,18 +782,20 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                             onPressed: _markFailed,
                             icon: const Icon(Icons.cancel, size: 24),
                             label: const Text(
-                              'Mark Incomplete (-5 HP)',
+                              'Abandon Quest',
                               style: TextStyle(
                                 fontSize: 16,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 0.5,
                               ),
                             ),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.orange.shade500,
+                              backgroundColor: Colors.red.shade700,
                               foregroundColor: Colors.white,
-                              elevation: 6,
+                              elevation: 8,
+                              shadowColor: Colors.red.shade900.withOpacity(0.6),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(14),
                               ),
                             ),
                           ),
@@ -586,7 +803,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
 
                         const SizedBox(height: 12),
 
-                        // Edit & Delete Buttons (Row)
+                        // Edit & Delete Row
                         Row(
                           children: [
                             Expanded(
@@ -595,12 +812,16 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                                 icon: const Icon(Icons.edit, size: 18),
                                 label: const Text(
                                   'Edit',
-                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                  style: TextStyle(fontWeight: FontWeight.w700),
                                 ),
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.blue.shade400,
+                                  backgroundColor: Colors.blue.shade700
+                                      .withOpacity(0.8),
                                   foregroundColor: Colors.white,
-                                  elevation: 4,
+                                  elevation: 6,
+                                  shadowColor: Colors.blue.shade900.withOpacity(
+                                    0.5,
+                                  ),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12),
                                   ),
@@ -614,12 +835,16 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                                 icon: const Icon(Icons.delete, size: 18),
                                 label: const Text(
                                   'Delete',
-                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                  style: TextStyle(fontWeight: FontWeight.w700),
                                 ),
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.red.shade500,
+                                  backgroundColor: Colors.red.shade800
+                                      .withOpacity(0.8),
                                   foregroundColor: Colors.white,
-                                  elevation: 4,
+                                  elevation: 6,
+                                  shadowColor: Colors.red.shade900.withOpacity(
+                                    0.5,
+                                  ),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12),
                                   ),
@@ -636,9 +861,9 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                 ),
               ),
             ),
-          ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }
